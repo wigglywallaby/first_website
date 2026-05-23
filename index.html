@@ -58,7 +58,29 @@
       font-size: 18px;
       line-height: 1.8;
     }
+
+    .cards {
+      display: flex;
+      gap: 20px;
+    }
+
+    .card {
+      background-color: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 24px;
+      flex: 1;
+    }
+
+    .card h3 {
+      color: #e94560;
+      margin-bottom: 10px;
+    }
     
+    .card p {
+      font-size: 16px;
+      line-height: 1.6;
+    }
     </style>
   </head>
   <body>
@@ -84,5 +106,22 @@
         I want to create a website that showcases my interests and projects, and I'm excited to learn more about coding and design.</p>
     </div>
 
+    <div class="section" id="interests">
+     <h2>What I'm Learning</h2>
+     <div class="cards">
+        <div class ="card">
+          <h3>Web Development</h3>
+          <p>HTML, CSS, and how the internet works.</p>
+        </div>
+        <div class="card">
+          <h3>Git & Github</h3>
+          <p>Version control and deploying real projects.</p>
+        </div>
+        <div class="card">
+          <h3>Food Tech Systems</h3>
+          <p>SafetyChain, ERPs, APIs, and manufacturing data.</p>
+        </div>
+     </div>
+    </div>
   </body>
 </html>
