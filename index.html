@@ -1,29 +1,127 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Max's Website</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Max | Food Manufacturing Meets Digital Systems</title>
     <style>
+      :root {
+        --bg: #faf9f6;
+        --text: #222222;
+        --muted: #666666;
+        --accent: #2f6f4f;
+        --line: #e3e0d8;
+      }
+
       body {
-        background-color: #03fc28;
-        color: white;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        padding: 60px;
+        background-color: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0 20px;
       }
+
+      .container {
+        max-width: 680px;
+        margin: 0 auto;
+      }
+
+      header {
+        padding: 80px 0 40px;
+        border-bottom: 1px solid var(--line);
+      }
+
       h1 {
-        font-size: 48px;
-        color: #ba0707;
+        font-size: 40px;
+        margin: 0 0 8px;
       }
-      p {
+
+      .tagline {
         font-size: 20px;
-        color: #c5db1c;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      section {
+        padding: 40px 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h2 {
+        font-size: 24px;
+        color: var(--accent);
+        margin: 0 0 16px;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+
+      li {
+        margin-bottom: 12px;
+      }
+
+      .soon {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      footer {
+        padding: 40px 0 60px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      a {
+        color: var(--accent);
       }
     </style>
   </head>
   <body>
-    <h1>Hi, I'm Max!</h1>
-    <h2>Something to write about...</h2>
-    <p>This is my first website. I'm not very good at this yet.</p>
-    <p>But I'm getting better each day.</p>
+    <div class="container">
+      <header>
+        <h1>Max</h1>
+        <p class="tagline">
+          Notes from a systems-minded person learning how food manufacturing
+          and technology fit together.
+        </p>
+      </header>
+
+      <main>
+        <section>
+          <h2>About</h2>
+          <p>
+            I work in food safety and quality at a food manufacturing facility,
+            but the job reaches into everything: operations, sanitation,
+            receiving, and whatever else needs a hand. Most of it comes down to
+            figuring out how people, processes, and software fit together (and
+            what breaks when they don't).
+          </p>
+        </section>
+
+        <section>
+          <h2>Writing</h2>
+          <ul>
+            <li>
+              From paper logs to digital quality systems
+              <span class="soon">(coming soon)</span>
+            </li>
+            <li>
+              What I learned by teaching myself to code
+              <span class="soon">(coming soon)</span>
+            </li>
+            <li>
+              Testing what AI can and can't do in a quality workflow
+              <span class="soon">(coming soon)</span>
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      <footer>
+        <a href="https://github.com/wigglywallaby">GitHub</a>
+      </footer>
+    </div>
   </body>
 </html>
