@@ -3,14 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Max | Food Manufacturing Meets Digital Systems</title>
+    <meta
+      name="description"
+      content="Maxwell Ortgies is a food safety and quality systems professional specializing in digital FSQA management, audits, CAPA, and continuous improvement."
+    />
+    <title>Maxwell Ortgies | Food Safety & Quality Systems</title>
     <style>
       :root {
-        --bg: #faf9f6;
-        --text: #222222;
-        --muted: #666666;
-        --accent: #2f6f4f;
-        --line: #e3e0d8;
+        --bg: #f7f7f2;
+        --surface: #ffffff;
+        --text: #202521;
+        --muted: #626963;
+        --accent: #315c46;
+        --accent-light: #edf3ef;
+        --line: #dfe4de;
+        --warm: #b96f49;
+      }
+
+      * {
+        box-sizing: border-box;
       }
 
       body {
@@ -20,25 +31,43 @@
         line-height: 1.6;
         margin: 0;
         padding: 0 20px;
+        overflow-wrap: break-word;
+      }
+
+      html {
+        scroll-behavior: smooth;
       }
 
       .container {
-        max-width: 680px;
+        max-width: 860px;
         margin: 0 auto;
       }
 
       header {
-        padding: 80px 0 40px;
+        padding: 76px 0 56px;
         border-bottom: 1px solid var(--line);
       }
 
+      nav {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 32px;
+      }
+
+      nav a {
+        font-size: 14px;
+      }
+
       h1 {
-        font-size: 40px;
+        font-size: clamp(42px, 8vw, 68px);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
         margin: 0 0 8px;
       }
 
       .tagline {
-        font-size: 20px;
+        max-width: 680px;
+        font-size: 21px;
         color: var(--muted);
         margin: 0;
       }
@@ -51,147 +80,471 @@
       h2 {
         font-size: 24px;
         color: var(--accent);
-        margin: 0 0 16px;
+        margin: 0 0 20px;
+      }
+
+      h3 {
+        margin: 0 0 4px;
       }
 
       ul {
         padding-left: 20px;
+        margin: 12px 0 0;
       }
 
       li {
         margin-bottom: 12px;
       }
 
-      .soon {
+      .eyebrow {
+        color: var(--warm);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .summary {
+        font-size: 19px;
+        max-width: 760px;
+      }
+
+      .role {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 20px;
+        align-items: start;
+        margin-bottom: 28px;
+      }
+
+      .role:last-child {
+        margin-bottom: 0;
+      }
+
+      .role-meta {
         color: var(--muted);
         font-size: 14px;
+        white-space: nowrap;
+      }
+
+      .role-company {
+        color: var(--muted);
+        margin: 0 0 8px;
+      }
+
+      .capability-groups {
+        display: grid;
+        gap: 16px;
+      }
+
+      .capability-group h3 {
+        color: var(--muted);
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        margin: 0 0 8px;
+        text-transform: uppercase;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .chips li {
+        background: var(--accent-light);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 650;
+        margin: 0;
+        padding: 7px 12px;
+      }
+
+      .education {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+      }
+
+      .education p {
+        margin: 0;
+      }
+
+      .sensory {
+        margin-top: 24px;
+        padding-left: 16px;
+        border-left: 3px solid var(--warm);
+      }
+
+      .sensory h3 {
+        font-size: 16px;
+        margin-bottom: 2px;
+      }
+
+      .sensory p {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .contact-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .contact-links a {
+        background: var(--accent-light);
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 14px;
+        text-decoration: none;
+      }
+
+      .work-intro {
+        color: var(--muted);
+        font-size: 19px;
+        margin: 0 0 20px;
+      }
+
+      .work-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .work-card {
+        background: var(--accent-light);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 20px;
+      }
+
+      .work-card h3 {
+        color: var(--text);
+        font-size: 18px;
+        margin: 0 0 8px;
+      }
+
+      .work-card p {
+        color: var(--muted);
+        margin: 0;
       }
 
       footer {
         padding: 40px 0 60px;
         color: var(--muted);
         font-size: 14px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
       }
 
       a {
         color: var(--accent);
-      }
-      .hero {
-        background-color: #1a1a1a;
-        padding: 60px;
-        border-radius: 12px;
-      }
-      nav {
-        background-color: #1a1a1a;
-        padding: 20px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        font-weight: 650;
+        text-underline-offset: 3px;
       }
 
-      .logo {
-        font-size: 24px;
-        font-weight: bold;
-        color: #e94560;
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171b18;
+          --surface: #202521;
+          --text: #f2f4ef;
+          --muted: #bdc6bf;
+          --accent: #93c4a8;
+          --accent-light: #252d27;
+          --line: #3b463f;
+          --warm: #d49a78;
+        }
       }
 
-      .nav-links a {
-        color: white;
-        text-decoration: none;
-        margin-left: 24px;
+      @media (max-width: 768px) {
+        header {
+          padding: 48px 0 40px;
+        }
+
+        nav {
+          justify-content: flex-start;
+          margin-bottom: 24px;
+        }
+
+        h1 {
+          font-size: clamp(38px, 12vw, 56px);
+        }
+
+        .tagline {
+          font-size: 18px;
+        }
+
+        .role {
+          grid-template-columns: 1fr;
+          gap: 4px;
+        }
+
+        .role-meta {
+          white-space: normal;
+        }
+
+        .role-company {
+          margin-bottom: 10px;
+        }
+
+        .education {
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .work-grid {
+          grid-template-columns: 1fr;
+        }
       }
-    .section {
-      padding: 60px 40px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
 
-    .section h2 {
-      font-size: 32px;
-      color: #e94560;
-      margin-bottom: 20px;
-    }
+      @media (max-width: 640px) {
+        body {
+          padding: 0 16px;
+        }
 
-    .section p {
-      font-size: 18px;
-      line-height: 1.8;
-    }
+        header {
+          padding: 36px 0 32px;
+        }
 
-    .cards {
-      display: flex;
-      gap: 20px;
-    }
+        section {
+          padding: 32px 0;
+        }
 
-    .card {
-      background-color: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 24px;
-      flex: 1;
-    }
+        h1 {
+          font-size: clamp(34px, 11vw, 44px);
+        }
 
-    .card h3 {
-      color: #e94560;
-      margin-bottom: 10px;
-    }
-    
-    .card p {
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    footer {
-      text-align: center;
-      padding: 30px;
-      background-color: #1a1a1a;
-      color: #555;
-      font-size: 14px;
-      margin-top: 60px;
-      boarder-top: 1px solid #333;
-    }
+        h2 {
+          font-size: 22px;
+        }
+
+        .eyebrow {
+          font-size: 11px;
+          letter-spacing: 0.07em;
+          line-height: 1.8;
+        }
+
+        .summary {
+          font-size: 17px;
+        }
+
+        .chips {
+          gap: 6px;
+        }
+
+        .chips li {
+          max-width: 100%;
+          font-size: 13px;
+          padding: 6px 10px;
+        }
+
+        .sensory {
+          margin-top: 20px;
+        }
+
+        footer {
+          flex-direction: column;
+          padding: 32px 0 48px;
+        }
+
+        .contact-links {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <header>
-        <h1>Max</h1>
+        <nav aria-label="Primary navigation">
+          <a href="#contact">Contact</a>
+        </nav>
+        <p class="eyebrow">Quality Management Systems | Food Safety | Enterprise content management</p>
+        <h1>Maxwell Ortgies</h1>
         <p class="tagline">
-          Notes from a systems-minded person learning how food manufacturing
-          and technology fit together.
+          I build practical food safety and quality systems that help teams
+          work consistently, improve continuously, and move beyond paper.
         </p>
       </header>
 
       <main>
         <section>
           <h2>About</h2>
-          <p>
-            I work in food safety and quality at a food manufacturing facility,
-            but the job reaches into everything: operations, sanitation,
-            receiving, and whatever else needs a hand. Most of it comes down to
-            figuring out how people, processes, and software fit together (and
-            what breaks when they don't).
+          <p class="summary">
+            I am a food safety and quality systems professional who builds and
+            manages FSQA programs in large manufacturing environments. My work
+            combines SQF, HACCP, ISO, document control, CAPA, audit readiness,
+            and hands-on operational knowledge with digital tools that make
+            quality records more reliable and useful.
           </p>
         </section>
 
         <section>
-          <h2>Writing</h2>
-          <ul>
-            <li>
-              From paper logs to digital quality systems
-              <span class="soon">(coming soon)</span>
-            </li>
-            <li>
-              What I learned by teaching myself to code
-              <span class="soon">(coming soon)</span>
-            </li>
-            <li>
-              Testing what AI can and can't do in a quality workflow
-              <span class="soon">(coming soon)</span>
-            </li>
-          </ul>
+          <h2>Selected Project</h2>
+          <p>
+            Designed and led SafetyChain implementations on bottle and can
+            production lines, replacing more than 50 unique paper forms across
+            Operations, FSQA, and Sanitation. Both teams moved away from paper
+            records within one week of go-live.
+          </p>
+        </section>
+
+        <section>
+          <h2>Experience</h2>
+
+          <article class="role">
+            <div>
+              <h3>FSQA Digital Systems Lead</h3>
+              <p class="role-company">Westrock Coffee Company · Conway, Arkansas</p>
+              <ul>
+                <li>Lead development and maintenance of digital FSQA management systems across Operations, Quality, Receiving, and Sanitation.</li>
+                <li>Standardize procedures, SOPs, forms, and records to align with SQF, HACCP, ISO, and customer requirements.</li>
+                <li>Administer SafetyChain across three Arkansas facilities and contribute to a team supporting five facilities, 30+ production lines, and hundreds of finished goods.</li>
+                <li>Develop KPI reports that turn system data into actionable insights for leadership.</li>
+              </ul>
+            </div>
+            <span class="role-meta">November 2025–Present</span>
+          </article>
+
+          <article class="role">
+            <div>
+              <h3>FSQA Supervisor</h3>
+              <p class="role-company">Westrock Coffee Company · Conway, Arkansas</p>
+              <ul>
+                <li>Supervised 10+ QA team members across three shifts and coached staff on food safety, quality, and regulatory standards.</li>
+                <li>Led CAPA and root cause investigations for nonconformances and supported internal and external audit readiness.</li>
+                <li>Managed product testing, traceability, sensory evaluations, and quality performance analysis.</li>
+              </ul>
+            </div>
+            <span class="role-meta">April–November 2025</span>
+          </article>
+
+          <article class="role">
+            <div>
+              <h3>Quality Assurance Supervisor</h3>
+              <p class="role-company">Kauai Coffee Company · Kalaheo, Hawaii</p>
+              <ul>
+                <li>Directed all aspects of the QA laboratory within state and federal regulatory requirements.</li>
+                <li>Built workflow improvements that strengthened product quality, operational stability, and audit readiness.</li>
+                <li>Created a comprehensive training plan to ensure a smooth and sustainable transition for replacement staff.</li>
+              </ul>
+            </div>
+            <span class="role-meta">August 2024–March 2025</span>
+          </article>
+        </section>
+
+        <section>
+          <h2>Core Capabilities</h2>
+          <div class="capability-groups">
+            <div class="capability-group">
+              <h3>Systems</h3>
+              <ul class="chips">
+                <li>FSQA Management Systems</li>
+                <li>SafetyChain Administration</li>
+                <li>Digital Workflow Implementation</li>
+              </ul>
+            </div>
+
+            <div class="capability-group">
+              <h3>Standards</h3>
+              <ul class="chips">
+                <li>SQF, HACCP & ISO Programs</li>
+                <li>Audit Preparation & Response</li>
+                <li>CAPA & Root Cause Analysis</li>
+              </ul>
+            </div>
+
+            <div class="capability-group">
+              <h3>Analysis</h3>
+              <ul class="chips">
+                <li>KPI Reporting & Data Analysis</li>
+                <li>Cross-Functional Training</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h2>Education</h2>
+          <div class="education">
+            <p>
+              <strong>Bachelor of Science, Food Science</strong><br />
+              California Polytechnic State University, San Luis Obispo
+            </p>
+            <p>
+              <strong>2017–2021</strong>
+            </p>
+          </div>
+          <div class="sensory">
+            <h3>Sensory Team Lead</h3>
+            <p>
+              Led sensory studies for private-industry clients, including local
+              wine labels. Managed panel logistics, sample preparation, data
+              collection and analysis, and presentations supporting product decisions.
+            </p>
+          </div>
+        </section>
+
+        <section id="how-i-work">
+          <h2>How I Work</h2>
+          <p class="work-intro">My approach comes from the floor, not the office.</p>
+          <div class="work-grid">
+            <article class="work-card">
+              <h3>Start on the floor.</h3>
+              <p>
+                Before I build anything, I collect the paperwork, shadow operators,
+                and do the checks alongside them. The tribal knowledge that never
+                makes it onto a form is where good system design starts.
+              </p>
+            </article>
+            <article class="work-card">
+              <h3>If it doesn't work for the operator, it doesn't work.</h3>
+              <p>
+                If a check takes longer to document than to perform, or makes the
+                line more stressful, I rethink the approach.
+              </p>
+            </article>
+            <article class="work-card">
+              <h3>Earn trust by showing up.</h3>
+              <p>
+                During rollout, I work as part of the team: fixing issues quickly,
+                jumping in when a line falls behind, and making sure operators know
+                QA is on their side.
+              </p>
+            </article>
+            <article class="work-card">
+              <h3>Build the handoffs, not just the forms.</h3>
+              <p>
+                Our Work Order Management form started with four fields and was
+                shaped by supervisor feedback over months. It now launches tasks,
+                tracks production, and triggers sanitation's CIP automatically,
+                replacing radio calls where details got lost.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section id="contact">
+          <h2>Contact</h2>
+          <div class="contact-links">
+            <a href="mailto:maxortgies@gmail.com">Email</a>
+            <a href="./resume.pdf" download>Download Resume PDF</a>
+          </div>
         </section>
       </main>
 
       <footer>
+        <a href="mailto:maxortgies@gmail.com">maxortgies@gmail.com</a>
         <a href="https://github.com/wigglywallaby">GitHub</a>
       </footer>
     </div>
