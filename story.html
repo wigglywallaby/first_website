@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="An illustrative, interactive story about building useful food safety systems on an applesauce production line."
+    />
+    <title>Interactive Demo | Maxwell Ortgies</title>
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <style>
+      :root {
+        --bg: #f7f7f2;
+        --surface: #ffffff;
+        --text: #202521;
+        --muted: #626963;
+        --accent: #315c46;
+        --accent-light: #edf3ef;
+        --line: #dfe4de;
+        --warm: #b96f49;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 20px;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        overflow-wrap: break-word;
+      }
+
+      a {
+        color: var(--accent);
+        font-weight: 650;
+        text-underline-offset: 3px;
+      }
+
+      .story-nav,
+      .story-copy {
+        margin: 0 auto;
+        max-width: 900px;
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .story-nav {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 16px;
+        padding-top: 16px;
+      }
+
+      .story-nav a {
+        font-size: 14px;
+      }
+
+      .story-nav .eyebrow {
+        margin: 0;
+      }
+
+      .story-section {
+        align-items: center;
+        display: flex;
+        min-height: 100vh;
+        min-height: 100svh;
+        padding: 48px 0;
+      }
+
+      .story-copy {
+        width: 100%;
+      }
+
+      .eyebrow {
+        color: var(--warm);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        margin: 0 0 16px;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin-top: 0;
+      }
+
+      h1 {
+        font-size: clamp(40px, 7vw, 72px);
+        letter-spacing: -0.04em;
+        line-height: 1.06;
+        margin-bottom: 20px;
+        max-width: 850px;
+      }
+
+      h2 {
+        color: var(--accent);
+        font-size: clamp(30px, 5vw, 48px);
+        letter-spacing: -0.03em;
+        line-height: 1.12;
+        margin-bottom: 16px;
+      }
+
+      h3 {
+        font-size: 22px;
+        line-height: 1.25;
+        margin-bottom: 10px;
+      }
+
+      .lead {
+        color: var(--muted);
+        font-size: clamp(18px, 2.5vw, 23px);
+        max-width: 700px;
+      }
+
+      .caption {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 28px 0 0;
+      }
+
+      .story-section.scene {
+        opacity: 1;
+        transform: none;
+      }
+
+      .js .scene {
+        opacity: 0;
+        transform: translateY(24px);
+        transition:
+          opacity 600ms ease,
+          transform 600ms ease;
+      }
+
+      .js .scene.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+
+      .line-story {
+        align-items: initial;
+        display: block;
+        min-height: auto;
+        padding: 0 0 24px;
+      }
+
+      .line-heading {
+        padding-bottom: 16px;
+        padding-top: 48px;
+      }
+
+      .line-stage {
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .callout-track {
+        height: 92px;
+        position: relative;
+      }
+
+      .line-callout {
+        background: var(--surface);
+        border: 1px solid var(--accent);
+        border-radius: 10px;
+        box-shadow: 0 8px 24px rgb(32 37 33 / 12%);
+        left: 50%;
+        max-width: calc(100vw - 24px);
+        opacity: 0;
+        padding: 9px 14px;
+        pointer-events: none;
+        position: absolute;
+        top: 8px;
+        transform: translateX(-50%) translateY(-4px);
+        transition:
+          opacity 180ms ease,
+          transform 180ms ease;
+        visibility: hidden;
+        width: 300px;
+      }
+
+      .line-callout.is-visible {
+        opacity: 1;
+        transform: translateX(-50%);
+        visibility: visible;
+      }
+
+      .line-callout h3 {
+        color: var(--accent);
+        font-size: 15px;
+        margin: 0;
+      }
+
+      .line-callout ul {
+        color: var(--muted);
+        display: flex;
+        flex-wrap: wrap;
+        font-size: 12px;
+        gap: 2px 14px;
+        list-style: none;
+        margin: 3px 0 0;
+        padding: 0;
+      }
+
+      .line-callout li::before {
+        color: var(--warm);
+        content: "• ";
+      }
+
+      .line-art {
+        display: block;
+        height: auto;
+        margin: 0 auto;
+        overflow: visible;
+        padding: 0 4px 8px;
+        width: 100%;
+      }
+
+      .belt-rail {
+        fill: none;
+        stroke: var(--line);
+        stroke-linecap: round;
+        stroke-width: 18;
+      }
+
+      .belt-center {
+        fill: none;
+        stroke: var(--muted);
+        stroke-dasharray: 4 15;
+        stroke-linecap: round;
+        stroke-width: 2;
+        opacity: 0.7;
+      }
+
+      .belt-wheel {
+        fill: var(--surface);
+        stroke: var(--muted);
+        stroke-width: 3;
+      }
+
+      .station {
+        opacity: 1;
+        transition: opacity 250ms ease;
+      }
+
+      .station.is-dimmed {
+        opacity: 0.4;
+      }
+
+      .station-node {
+        fill: var(--surface);
+        stroke: var(--accent);
+        stroke-width: 4;
+        transition:
+          fill 250ms ease,
+          stroke 250ms ease,
+          filter 250ms ease;
+      }
+
+      .station.is-active .station-node {
+        fill: var(--accent);
+        filter: drop-shadow(0 0 9px var(--warm));
+        stroke: var(--warm);
+      }
+
+      .station-label {
+        fill: var(--text);
+        font-family: inherit;
+        font-size: 24px;
+        font-weight: 650;
+        text-anchor: middle;
+      }
+
+      .form-icon rect,
+      .form-icon path {
+        fill: var(--surface);
+        stroke: var(--muted);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3;
+      }
+
+      .form-icon path {
+        fill: none;
+      }
+
+      .product-cup {
+        transition: none;
+      }
+
+      .cup-body {
+        fill: var(--warm);
+        stroke: var(--text);
+        stroke-width: 2;
+      }
+
+      .cup-lid {
+        fill: var(--surface);
+        stroke: var(--text);
+        stroke-width: 2;
+      }
+
+      .line-steps {
+        margin: 0 auto;
+        max-width: 900px;
+        padding: 0 24px;
+      }
+
+      .line-step {
+        align-items: center;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(140px, 220px);
+        gap: 32px;
+        min-height: 58vh;
+        padding: 48px 0;
+      }
+
+      .step-copy {
+        border-left: 3px solid var(--line);
+        max-width: 650px;
+        padding: 8px 0 8px 24px;
+        transition: border-color 200ms ease;
+      }
+
+      .line-step.is-active .step-copy {
+        border-color: var(--accent);
+      }
+
+      .step-copy p {
+        color: var(--muted);
+        font-size: 18px;
+        margin: 0;
+      }
+
+      .step-illustration {
+        align-items: center;
+        background: var(--accent-light);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        color: var(--accent);
+        display: flex;
+        justify-content: center;
+        min-height: 150px;
+        padding: 18px;
+      }
+
+      .step-illustration svg {
+        height: auto;
+        max-height: 130px;
+        max-width: 100%;
+        overflow: visible;
+        width: 170px;
+      }
+
+      .step-illustration .illustration-fill {
+        fill: var(--surface);
+        stroke: var(--accent);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4;
+      }
+
+      .step-illustration .illustration-accent {
+        fill: var(--warm);
+        stroke: var(--accent);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 3;
+      }
+
+      .step-illustration .illustration-line {
+        fill: none;
+        stroke: var(--muted);
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-width: 4;
+      }
+
+      .story-continuation {
+        border-top: 1px solid var(--line);
+        margin: 0 auto;
+        max-width: 900px;
+        padding: 56px 24px;
+      }
+
+      .story-continuation h2 {
+        font-size: clamp(26px, 4vw, 38px);
+      }
+
+      .story-continuation .caption {
+        margin-top: 24px;
+      }
+
+      .story-continuation.is-active {
+        background: var(--accent-light);
+        border-radius: 12px;
+      }
+
+      .story-continuation .story-copy {
+        max-width: none;
+        padding: 0;
+      }
+
+      .story-continuation .lead {
+        margin-bottom: 0;
+      }
+
+      .story-continuation.ending {
+        text-align: left;
+      }
+
+      .story-continuation.ending .lead {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .narrative-callout {
+        color: var(--muted);
+        font-size: 14px;
+        margin: 0;
+      }
+
+      .line-reset {
+        height: 16vh;
+      }
+
+      .problem-list {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        list-style: none;
+        margin: 28px 0 0;
+        padding: 0;
+      }
+
+      .problem-list li {
+        background: var(--accent-light);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 650;
+        padding: 20px;
+      }
+
+      .ending {
+        text-align: center;
+      }
+
+      .ending .lead {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .button {
+        background: var(--accent);
+        border: 2px solid var(--accent);
+        border-radius: 8px;
+        color: var(--bg);
+        display: inline-block;
+        margin-top: 12px;
+        padding: 12px 20px;
+        text-decoration: none;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        background: var(--bg);
+        color: var(--accent);
+      }
+
+      a:focus-visible {
+        border-radius: 3px;
+        outline: 3px solid var(--warm);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 700px) {
+        .story-nav,
+        .story-copy,
+        .line-steps {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .story-section {
+          padding: 32px 0;
+        }
+
+        .line-heading {
+          padding-top: 32px;
+        }
+
+        .callout-track {
+          height: 82px;
+        }
+
+        .line-callout {
+          padding: 7px 10px;
+          width: 280px;
+        }
+
+        .line-callout ul {
+          column-gap: 8px;
+          font-size: 11px;
+        }
+
+        .line-art {
+          padding-left: 4px;
+          padding-right: 4px;
+        }
+
+        .station-label {
+          font-size: 31px;
+        }
+
+        .line-step {
+          grid-template-columns: minmax(0, 1fr) minmax(86px, 112px);
+          gap: 14px;
+          min-height: 55vh;
+          padding: 32px 0;
+        }
+
+        .step-copy {
+          padding-left: 14px;
+        }
+
+        .step-copy p {
+          font-size: 15px;
+        }
+
+        .step-copy h3 {
+          font-size: 19px;
+        }
+
+        .step-illustration {
+          min-height: 100px;
+          padding: 8px;
+        }
+
+        .step-illustration svg {
+          max-height: 90px;
+          width: 100px;
+        }
+
+        .story-continuation {
+          padding: 36px 18px;
+        }
+
+        .story-continuation.is-active {
+          border-radius: 0;
+        }
+
+        .problem-list {
+          grid-template-columns: 1fr;
+        }
+
+        .problem-list li {
+          font-size: 16px;
+          padding: 16px;
+        }
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #171b18;
+          --surface: #202521;
+          --text: #f2f4ef;
+          --muted: #bdc6bf;
+          --accent: #93c4a8;
+          --accent-light: #252d27;
+          --line: #3b463f;
+          --warm: #d49a78;
+        }
+
+        .line-callout {
+          box-shadow: 0 8px 24px rgb(0 0 0 / 35%);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        .js .scene,
+        .js .scene.is-visible {
+          opacity: 1;
+          transform: none;
+          transition: none;
+        }
+
+        .line-callout,
+        .station,
+        .station-node,
+        .step-copy {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="story-nav" aria-label="Story navigation">
+      <a href="./index.html">Back to home</a>
+      <span class="eyebrow">Interactive Demo</span>
+    </nav>
+
+    <main>
+      <section class="story-section scene is-visible" id="intro">
+        <div class="story-copy">
+          <p class="eyebrow">An illustrative production-line story</p>
+          <h1>You're the new QMS Manager at an applesauce plant.</h1>
+          <p class="lead">Here's your production line.</p>
+          <p class="caption">Illustrative story with made-up data.</p>
+        </div>
+      </section>
+
+      <section class="story-section scene line-story" id="the-line">
+        <div class="story-copy line-heading">
+          <p class="eyebrow">The line</p>
+          <h2>Follow the checks from incoming material to finished case.</h2>
+        </div>
+
+        <div class="line-stage" aria-label="Production line visualization">
+          <div class="callout-track">
+            <div class="line-callout" id="line-callout" role="status" aria-live="polite" aria-hidden="true">
+              <h3 id="callout-title"></h3>
+              <ul id="callout-checks"></ul>
+            </div>
+          </div>
+          <svg
+            class="line-art"
+            viewBox="0 0 1000 280"
+            role="img"
+            aria-label="Applesauce production line from incoming material through fill, seal, best-by date, packaging, and finished case"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path class="belt-rail" d="M42 150 H958" />
+            <path class="belt-center" d="M42 150 H958" />
+            <circle class="belt-wheel" cx="46" cy="150" r="13" />
+            <circle class="belt-wheel" cx="954" cy="150" r="13" />
+
+            <g class="station" data-station="incoming">
+              <g class="form-icon" transform="translate(63 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="80" cy="150" r="24" />
+              <text class="station-label" x="80" y="220">
+                <tspan x="80">Incoming</tspan>
+                <tspan x="80" dy="28">Material</tspan>
+              </text>
+            </g>
+
+            <g class="station" data-station="fill">
+              <g class="form-icon" transform="translate(231 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="248" cy="150" r="24" />
+              <text class="station-label" x="248" y="228">Fill</text>
+            </g>
+
+            <g class="station" data-station="seal">
+              <g class="form-icon" transform="translate(399 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="416" cy="150" r="24" />
+              <text class="station-label" x="416" y="228">Seal</text>
+            </g>
+
+            <g class="station" data-station="bestby">
+              <g class="form-icon" transform="translate(567 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="584" cy="150" r="24" />
+              <text class="station-label" x="584" y="228">Best By</text>
+            </g>
+
+            <g class="station" data-station="packaging">
+              <g class="form-icon" transform="translate(735 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="752" cy="150" r="24" />
+              <text class="station-label" x="752" y="228">Packaging</text>
+            </g>
+
+            <g class="station" data-station="finished">
+              <g class="form-icon" transform="translate(903 53)" aria-hidden="true">
+                <rect x="0" y="0" width="34" height="42" rx="3" />
+                <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
+              </g>
+              <circle class="station-node" cx="920" cy="150" r="24" />
+              <text class="station-label" x="920" y="220">
+                <tspan x="920">Finished</tspan>
+                <tspan x="920" dy="28">Case</tspan>
+              </text>
+            </g>
+
+            <g class="product-cup" id="product-cup" transform="translate(80 150)" aria-hidden="true">
+              <path class="cup-body" d="M-12 -20 L-9 10 Q0 16 9 10 L12 -20 Z" />
+              <rect class="cup-lid" x="-14" y="-24" width="28" height="6" rx="3" />
+            </g>
+          </svg>
+        </div>
+
+        <div class="line-steps">
+          <article class="line-step" data-step="incoming">
+            <div class="step-copy">
+              <p class="eyebrow">Step 1</p>
+              <h3>Incoming Material</h3>
+              <p>Check incoming material before it enters the production line.</p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Crate of applesauce ingredients">
+                <path class="illustration-fill" d="M28 52 H152 L142 112 H38 Z" />
+                <path class="illustration-line" d="M38 72 H146 M42 92 H143 M61 55 V108 M90 55 V108 M119 55 V108" />
+                <circle class="illustration-accent" cx="66" cy="39" r="14" />
+                <circle class="illustration-accent" cx="97" cy="34" r="15" />
+                <circle class="illustration-accent" cx="124" cy="41" r="13" />
+                <path class="illustration-line" d="M66 24 Q70 14 78 17 M97 19 Q102 9 109 14 M124 28 Q129 19 136 22" />
+              </svg>
+            </div>
+          </article>
+          <article class="line-step" data-step="fill">
+            <div class="step-copy">
+              <p class="eyebrow">Step 2</p>
+              <h3>Fill</h3>
+              <p>Capture fill weight and product temperature.</p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Digital scale for checking fill weight">
+                <path class="illustration-fill" d="M35 55 H145 L155 112 H25 Z" />
+                <rect class="illustration-fill" x="68" y="77" width="44" height="21" rx="4" />
+                <path class="illustration-line" d="M79 87 H101 M55 45 H125" />
+                <path class="illustration-accent" d="M69 44 L75 21 H105 L111 44 Z" />
+                <path class="illustration-line" d="M84 33 H96" />
+              </svg>
+            </div>
+          </article>
+          <article class="line-step" data-step="seal">
+            <div class="step-copy">
+              <p class="eyebrow">Step 3</p>
+              <h3>Seal</h3>
+              <p>Check seal integrity and make sure there are no blemishes.</p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Applesauce cup foil seal inspected with a magnifying glass">
+                <path class="illustration-fill" d="M34 57 L44 112 Q76 126 108 112 L118 57 Z" />
+                <ellipse class="illustration-accent" cx="76" cy="57" rx="43" ry="12" />
+                <path class="illustration-line" d="M115 69 L145 100" />
+                <circle class="illustration-fill" cx="130" cy="54" r="23" />
+                <path class="illustration-line" d="M119 54 H141 M130 43 V65" />
+              </svg>
+            </div>
+          </article>
+          <article class="line-step" data-step="bestby">
+            <div class="step-copy">
+              <p class="eyebrow">Step 4</p>
+              <h3>Best By Date</h3>
+              <p>Make sure the best-by date is clear and legible.</p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Best-by date label with clear printed text">
+                <rect class="illustration-fill" x="28" y="24" width="124" height="82" rx="8" />
+                <path class="illustration-line" d="M28 47 H152 M49 18 V34 M131 18 V34" />
+                <path class="illustration-accent" d="M48 61 H132 V89 H48 Z" />
+                <path class="illustration-line" d="M58 75 H122" />
+              </svg>
+            </div>
+          </article>
+          <article class="line-step" data-step="packaging">
+            <div class="step-copy">
+              <p class="eyebrow">Step 5</p>
+              <h3>Packaging</h3>
+              <p>Ensure cups are properly packaged in six-pack containers.</p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Six applesauce cups arranged in a six-pack container">
+                <path class="illustration-fill" d="M25 42 H155 L143 108 H37 Z" />
+                <path class="illustration-line" d="M37 67 H149 M31 45 L40 108 M68 44 L72 108 M108 44 L105 108 M147 45 L140 108" />
+                <path class="illustration-accent" d="M43 25 H61 L64 52 H40 Z M73 25 H91 L94 52 H70 Z M103 25 H121 L124 52 H100 Z M58 62 H76 L79 89 H55 Z M89 62 H107 L110 89 H86 Z M120 62 H138 L141 89 H117 Z" />
+              </svg>
+            </div>
+          </article>
+          <article class="line-step" data-step="finished">
+            <div class="step-copy">
+              <p class="eyebrow">Step 6</p>
+              <h3>Finished Case</h3>
+              <p>
+                Ensure each case is packed with eight six-packs and the case label
+                is properly applied before putting it on a pallet.
+              </p>
+            </div>
+            <div class="step-illustration">
+              <svg viewBox="0 0 180 130" role="img" aria-label="Finished case with a shipping label on a pallet">
+                <path class="illustration-fill" d="M32 22 H148 V88 H32 Z" />
+                <path class="illustration-line" d="M32 47 H148 M90 22 V88" />
+                <rect class="illustration-accent" x="101" y="34" width="35" height="28" rx="3" />
+                <path class="illustration-line" d="M107 43 H130 M107 51 H125" />
+                <path class="illustration-line" d="M22 100 H158 M30 111 H150 M45 100 V111 M90 100 V111 M135 100 V111" />
+              </svg>
+            </div>
+          </article>
+        </div>
+        <div class="line-reset" data-line-reset aria-hidden="true"></div>
+
+        <section class="story-continuation scene" id="paper-problem" data-narrative="paper">
+          <div class="story-copy">
+            <p class="eyebrow">The paper problem</p>
+            <h2>Good checks can get lost in the paperwork.</h2>
+            <ul class="problem-list">
+              <li>Late and illegible forms</li>
+              <li>A check that takes longer to write down than to do</li>
+              <li>A radio call that gets garbled</li>
+            </ul>
+            <p class="narrative-callout">The same handoffs connect every station on the line.</p>
+            <p class="caption">Illustrative story with made-up data.</p>
+          </div>
+        </section>
+
+        <section class="story-continuation scene move-section" id="your-move" data-narrative="move">
+          <div class="story-copy">
+            <p class="eyebrow">Your move</p>
+            <h2>You walk the floor and ask the operators what they actually need.</h2>
+            <p class="narrative-callout">Every station matters. Follow the line as you listen and map the work.</p>
+            <p class="caption">Illustrative story with made-up data.</p>
+          </div>
+        </section>
+
+        <section class="story-continuation scene ending" id="ending" data-narrative="ending">
+          <div class="story-copy">
+            <p class="eyebrow">The next step</p>
+            <h2>The paper has to become data.</h2>
+            <p class="lead">
+              Now you need to turn these forms into a system your operators will actually use.
+            </p>
+            <p class="narrative-callout">The finished-case station is where the records and handoffs come together.</p>
+            <a class="button" href="./simulator.html">Open the simulator</a>
+            <p class="caption">Illustrative story with made-up data.</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const revealSections = document.querySelectorAll(".scene");
+      const lineSteps = document.querySelectorAll(".line-step");
+      const storyContinuations = document.querySelectorAll("[data-narrative]");
+      const lineReset = document.querySelector("[data-line-reset]");
+      const stations = document.querySelectorAll(".station");
+      const cup = document.getElementById("product-cup");
+      const lineArt = document.querySelector(".line-art");
+      const callout = document.getElementById("line-callout");
+      const calloutTitle = document.getElementById("callout-title");
+      const calloutChecks = document.getElementById("callout-checks");
+      const stationPositions = {
+        incoming: 80,
+        fill: 248,
+        seal: 416,
+        bestby: 584,
+        packaging: 752,
+        finished: 920,
+      };
+      const stepDetails = {
+        incoming: {
+          title: "Incoming Material",
+          checks: ["Incoming material condition"],
+        },
+        fill: {
+          title: "Fill",
+          checks: ["Fill weight", "Product temperature"],
+        },
+        seal: {
+          title: "Seal",
+          checks: ["Seal integrity", "No blemishes"],
+        },
+        bestby: {
+          title: "Best By Date",
+          checks: ["Date is clear", "Date is legible"],
+        },
+        packaging: {
+          title: "Packaging",
+          checks: ["Cups properly packaged", "Six-pack containers"],
+        },
+        finished: {
+          title: "Finished Case",
+          checks: ["Eight six-packs per case", "Case label applied before palletizing"],
+        },
+      };
+      const narrativeDetails = {
+        paper: {
+          title: "Paper handoffs",
+          checks: ["Late or illegible forms", "Slow-to-record checks", "Radio details get lost"],
+          activeStations: ["incoming", "fill", "seal", "bestby", "packaging", "finished"],
+          cupPosition: 500,
+        },
+        move: {
+          title: "Walk the floor",
+          checks: ["Ask operators what they need", "Map the work as it happens"],
+          activeStations: ["incoming", "fill", "seal", "bestby", "packaging", "finished"],
+          cupPosition: 584,
+        },
+        ending: {
+          title: "Build a usable system",
+          checks: ["Capture checks as data", "Connect team handoffs"],
+          activeStations: ["finished"],
+          cupPosition: 920,
+        },
+      };
+      let cupPosition = 80;
+      let cupAnimationFrame;
+
+      function revealAllSections() {
+        revealSections.forEach((section) => section.classList.add("is-visible"));
+      }
+
+      if ("IntersectionObserver" in window) {
+        const revealObserver = new IntersectionObserver(
+          (entries, observer) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("is-visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12 },
+        );
+
+        revealSections.forEach((section) => {
+          if (!section.classList.contains("is-visible")) {
+            revealObserver.observe(section);
+          }
+        });
+      } else {
+        revealAllSections();
+      }
+
+      function moveCup(destination) {
+        if (cupAnimationFrame) {
+          cancelAnimationFrame(cupAnimationFrame);
+        }
+
+        if (reducedMotion) {
+          cupPosition = destination;
+          cup.setAttribute("transform", `translate(${cupPosition} 150)`);
+          return;
+        }
+
+        const start = cupPosition;
+        const startedAt = performance.now();
+        const duration = 550;
+
+        function animate(now) {
+          const progress = Math.min((now - startedAt) / duration, 1);
+          const eased = 1 - (1 - progress) ** 3;
+          cupPosition = start + (destination - start) * eased;
+          cup.setAttribute("transform", `translate(${cupPosition} 150)`);
+
+          if (progress < 1) {
+            cupAnimationFrame = requestAnimationFrame(animate);
+          } else {
+            cupAnimationFrame = undefined;
+          }
+        }
+
+        cupAnimationFrame = requestAnimationFrame(animate);
+      }
+
+      function positionCallout(stationX) {
+        const svgWidth = lineArt.getBoundingClientRect().width;
+        const stage = document.querySelector(".line-stage");
+        const stageWidth = stage.getBoundingClientRect().width;
+        const bubbleWidth = Math.min(300, window.innerWidth - 24);
+        const stageLeft = stage.getBoundingClientRect().left;
+        const stationScreenX = lineArt.getBoundingClientRect().left + (stationX / 1000) * svgWidth;
+        const left = Math.min(
+          stageWidth - bubbleWidth / 2 - 12,
+          Math.max(bubbleWidth / 2 + 12, stationScreenX - stageLeft),
+        );
+        callout.style.left = `${left}px`;
+      }
+
+      function showCallout(title, checks, position) {
+        calloutTitle.textContent = title;
+        calloutChecks.replaceChildren(
+          ...checks.map((check) => {
+            const item = document.createElement("li");
+            item.textContent = check;
+            return item;
+          }),
+        );
+        positionCallout(position);
+        callout.setAttribute("aria-hidden", "false");
+        callout.classList.add("is-visible");
+      }
+
+      function setStationFocus(activeStations, cupDestination) {
+        stations.forEach((item) => {
+          const active = activeStations.includes(item.dataset.station);
+          item.classList.toggle("is-active", active);
+          item.classList.toggle("is-dimmed", activeStations.length > 0 && !active);
+        });
+        moveCup(cupDestination);
+      }
+
+      function clearDiagramFocus() {
+        lineSteps.forEach((step) => {
+          step.classList.remove("is-active", "is-in-view");
+        });
+        storyContinuations.forEach((section) => {
+          section.classList.remove("is-active", "is-in-view");
+        });
+        stations.forEach((item) => {
+          item.classList.remove("is-active", "is-dimmed");
+        });
+        callout.classList.remove("is-visible");
+        callout.setAttribute("aria-hidden", "true");
+      }
+
+      function activateStep(step) {
+        const detail = stepDetails[step];
+        if (!detail) {
+          clearDiagramFocus();
+          return;
+        }
+
+        lineSteps.forEach((item) => {
+          item.classList.toggle("is-active", item.dataset.step === step);
+        });
+        storyContinuations.forEach((section) => section.classList.remove("is-active"));
+        setStationFocus([step], stationPositions[step]);
+        showCallout(detail.title, detail.checks, stationPositions[step]);
+      }
+
+      function activateNarrative(section) {
+        const detail = narrativeDetails[section.dataset.narrative];
+        if (!detail) {
+          clearDiagramFocus();
+          return;
+        }
+
+        lineSteps.forEach((step) => step.classList.remove("is-active"));
+        storyContinuations.forEach((item) => {
+          item.classList.toggle("is-active", item === section);
+        });
+        setStationFocus(detail.activeStations, detail.cupPosition);
+        showCallout(detail.title, detail.checks, detail.cupPosition);
+      }
+
+      if ("IntersectionObserver" in window) {
+        const stepObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              entry.target.classList.toggle("is-in-view", entry.isIntersecting);
+            });
+
+            const activeItems = [
+              ...document.querySelectorAll(".line-step.is-in-view, [data-narrative].is-in-view"),
+            ].sort(
+              (a, b) =>
+                Math.abs(a.getBoundingClientRect().top + a.offsetHeight / 2 - window.innerHeight / 2) -
+                Math.abs(b.getBoundingClientRect().top + b.offsetHeight / 2 - window.innerHeight / 2),
+            );
+            const activeItem = activeItems[0];
+
+            if (activeItem?.matches(".line-step")) {
+              activateStep(activeItem.dataset.step);
+            } else if (activeItem?.hasAttribute("data-narrative")) {
+              activateNarrative(activeItem);
+            } else {
+              clearDiagramFocus();
+            }
+          },
+          { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
+        );
+
+        lineSteps.forEach((step) => stepObserver.observe(step));
+        storyContinuations.forEach((section) => stepObserver.observe(section));
+
+        const resetObserver = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+              clearDiagramFocus();
+            }
+          },
+          { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
+        );
+        resetObserver.observe(lineReset);
+      } else {
+        revealAllSections();
+      }
+
+      window.addEventListener("resize", () => {
+        const activeCallout = callout.classList.contains("is-visible");
+        if (activeCallout) {
+          const activeStation = document.querySelector(".station.is-active");
+          const activeStep = document.querySelector(".line-step.is-active");
+          const narrative = document.querySelector("[data-narrative].is-active");
+          const position =
+            activeStep ? stationPositions[activeStep.dataset.step] :
+            narrative ? narrativeDetails[narrative.dataset.narrative].cupPosition :
+            activeStation ? stationPositions[activeStation.dataset.station] : 500;
+          positionCallout(position);
+        }
+      });
+    </script>
+  </body>
+</html>
