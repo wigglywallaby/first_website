@@ -172,7 +172,7 @@
       }
 
       .callout-track {
-        height: 92px;
+        height: 68px;
         position: relative;
       }
 
@@ -187,7 +187,7 @@
         padding: 9px 14px;
         pointer-events: none;
         position: absolute;
-        top: 8px;
+        top: 4px;
         transform: translateX(-50%) translateY(-4px);
         transition:
           opacity 180ms ease,
@@ -229,7 +229,7 @@
         height: auto;
         margin: 0 auto;
         overflow: visible;
-        padding: 0 4px 8px;
+        padding: 0 4px 4px;
         width: 100%;
       }
 
@@ -247,12 +247,6 @@
         stroke-linecap: round;
         stroke-width: 2;
         opacity: 0.7;
-      }
-
-      .belt-wheel {
-        fill: var(--surface);
-        stroke: var(--muted);
-        stroke-width: 3;
       }
 
       .station {
@@ -323,6 +317,11 @@
         padding: 0 24px;
       }
 
+      .step-marker {
+        height: 1px;
+        margin-top: -1px;
+      }
+
       .line-step {
         align-items: center;
         display: grid;
@@ -330,6 +329,150 @@
         gap: 32px;
         min-height: 58vh;
         padding: 48px 0;
+      }
+
+      .paper-form {
+        background:
+          repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 35px,
+            color-mix(in srgb, var(--line) 55%, transparent) 36px
+          ),
+          var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgb(32 37 33 / 8%);
+        grid-column: 1 / -1;
+        justify-self: center;
+        max-width: 650px;
+        padding: 18px 20px;
+        width: 100%;
+      }
+
+      .paper-form-header {
+        align-items: baseline;
+        border-bottom: 2px solid var(--accent);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 12px;
+        justify-content: space-between;
+        padding-bottom: 8px;
+      }
+
+      .paper-form-header h4 {
+        color: var(--text);
+        font-size: 15px;
+        margin: 0;
+      }
+
+      .paper-form-step {
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .paper-form-fields {
+        color: var(--muted);
+        display: grid;
+        font-size: 12px;
+        gap: 8px 16px;
+        grid-template-columns: 1.5fr 1fr 0.7fr;
+        margin: 12px 0;
+      }
+
+      .paper-form-field {
+        align-items: baseline;
+        display: flex;
+        gap: 6px;
+        min-width: 0;
+        white-space: nowrap;
+      }
+
+      .paper-form-field span:last-child {
+        border-bottom: 1px solid var(--muted);
+        flex: 1;
+        min-width: 12px;
+      }
+
+      .paper-form table {
+        border-collapse: collapse;
+        font-size: 12px;
+        text-align: left;
+        width: 100%;
+      }
+
+      .paper-form--measure table {
+        table-layout: fixed;
+      }
+
+      .paper-form--measure th:nth-child(1) {
+        width: 36%;
+      }
+
+      .paper-form--measure th:nth-child(2) {
+        width: 28%;
+      }
+
+      .paper-form--measure th:nth-child(3) {
+        width: 14%;
+      }
+
+      .paper-form--measure th:nth-child(4) {
+        width: 22%;
+      }
+
+      .paper-form th,
+      .paper-form td {
+        border-bottom: 1px solid var(--line);
+        padding: 7px 5px;
+      }
+
+      .paper-form thead th {
+        color: var(--muted);
+        font-size: 10px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .paper-form tbody th {
+        color: var(--text);
+        font-weight: 550;
+        overflow-wrap: anywhere;
+      }
+
+      .paper-form td {
+        text-align: center;
+      }
+
+      .paper-box {
+        border: 1px solid var(--muted);
+        display: inline-block;
+        height: 12px;
+        margin: 0 2px;
+        vertical-align: middle;
+        width: 12px;
+      }
+
+      .paper-initials {
+        border-bottom: 1px solid var(--muted);
+        display: inline-block;
+        height: 12px;
+        width: 32px;
+      }
+
+      .paper-value-line {
+        border-bottom: 1px solid var(--muted);
+        display: block;
+        height: 14px;
+        margin: 0 auto;
+        width: 90%;
+      }
+
+      .paper-form-note {
+        color: var(--muted);
+        font-size: 11px;
+        font-style: italic;
+        margin: 10px 0 0;
       }
 
       .step-copy {
@@ -394,51 +537,66 @@
       }
 
       .story-continuation {
-        border-top: 1px solid var(--line);
         margin: 0 auto;
-        max-width: 900px;
-        padding: 56px 24px;
+        max-width: 1200px;
+        padding: 48px 24px 64px;
       }
 
       .story-continuation h2 {
-        font-size: clamp(26px, 4vw, 38px);
+        font-size: clamp(24px, 3vw, 34px);
       }
 
       .story-continuation .caption {
         margin-top: 24px;
       }
 
-      .story-continuation.is-active {
-        background: var(--accent-light);
+      .line-closing-grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .narrative-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
         border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        min-height: 280px;
+        padding: 22px;
+        transition:
+          opacity 600ms ease,
+          transform 600ms ease,
+          border-color 200ms ease,
+          background-color 200ms ease;
       }
 
-      .story-continuation .story-copy {
-        max-width: none;
-        padding: 0;
+      .narrative-card:nth-child(2) {
+        transition-delay: 160ms;
       }
 
-      .story-continuation .lead {
-        margin-bottom: 0;
+      .narrative-card:nth-child(3) {
+        transition-delay: 320ms;
       }
 
-      .story-continuation.ending {
-        text-align: left;
+      .narrative-card.is-active {
+        background: var(--accent-light);
+        border-color: var(--accent);
       }
 
-      .story-continuation.ending .lead {
-        margin-left: 0;
-        margin-right: 0;
-      }
-
-      .narrative-callout {
+      .narrative-card p:not(.eyebrow) {
         color: var(--muted);
-        font-size: 14px;
-        margin: 0;
       }
 
-      .line-reset {
-        height: 16vh;
+      .narrative-card .caption {
+        font-size: 12px;
+        margin-top: auto;
+        padding-top: 20px;
+      }
+
+      .narrative-card .button {
+        align-self: flex-start;
+        margin-top: auto;
       }
 
       .problem-list {
@@ -458,15 +616,6 @@
         font-size: 18px;
         font-weight: 650;
         padding: 20px;
-      }
-
-      .ending {
-        text-align: center;
-      }
-
-      .ending .lead {
-        margin-left: auto;
-        margin-right: auto;
       }
 
       .button {
@@ -509,7 +658,7 @@
         }
 
         .callout-track {
-          height: 82px;
+          height: 62px;
         }
 
         .line-callout {
@@ -561,11 +710,42 @@
         }
 
         .story-continuation {
-          padding: 36px 18px;
+          padding: 32px 18px 48px;
         }
 
-        .story-continuation.is-active {
-          border-radius: 0;
+        .line-closing-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .narrative-card {
+          min-height: 0;
+          padding: 20px;
+        }
+
+        .narrative-card:nth-child(n) {
+          transition-delay: 0ms;
+        }
+
+        .paper-form {
+          padding: 14px 12px;
+        }
+
+        .paper-form--measure table {
+          font-size: 10px;
+        }
+
+        .paper-form--measure th,
+        .paper-form--measure td {
+          padding: 6px 3px;
+        }
+
+        .paper-form--measure thead th {
+          font-size: 9px;
+          letter-spacing: 0;
+        }
+
+        .paper-form--measure .paper-initials {
+          width: 22px;
         }
 
         .problem-list {
@@ -605,6 +785,10 @@
           opacity: 1;
           transform: none;
           transition: none;
+        }
+
+        .narrative-card:nth-child(n) {
+          transition-delay: 0ms;
         }
 
         .line-callout,
@@ -647,77 +831,75 @@
           </div>
           <svg
             class="line-art"
-            viewBox="0 0 1000 280"
+            viewBox="0 0 1000 170"
             role="img"
             aria-label="Applesauce production line from incoming material through fill, seal, best-by date, packaging, and finished case"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path class="belt-rail" d="M42 150 H958" />
-            <path class="belt-center" d="M42 150 H958" />
-            <circle class="belt-wheel" cx="46" cy="150" r="13" />
-            <circle class="belt-wheel" cx="954" cy="150" r="13" />
+            <path class="belt-rail" d="M42 78 H958" />
+            <path class="belt-center" d="M42 78 H958" />
 
             <g class="station" data-station="incoming">
-              <g class="form-icon" transform="translate(63 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(63 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="80" cy="150" r="24" />
-              <text class="station-label" x="80" y="220">
+              <circle class="station-node" cx="80" cy="78" r="24" />
+              <text class="station-label" x="80" y="117">
                 <tspan x="80">Incoming</tspan>
-                <tspan x="80" dy="28">Material</tspan>
+                <tspan x="80" dy="23">Material</tspan>
               </text>
             </g>
 
             <g class="station" data-station="fill">
-              <g class="form-icon" transform="translate(231 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(231 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="248" cy="150" r="24" />
-              <text class="station-label" x="248" y="228">Fill</text>
+              <circle class="station-node" cx="248" cy="78" r="24" />
+              <text class="station-label" x="248" y="126">Fill</text>
             </g>
 
             <g class="station" data-station="seal">
-              <g class="form-icon" transform="translate(399 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(399 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="416" cy="150" r="24" />
-              <text class="station-label" x="416" y="228">Seal</text>
+              <circle class="station-node" cx="416" cy="78" r="24" />
+              <text class="station-label" x="416" y="126">Seal</text>
             </g>
 
             <g class="station" data-station="bestby">
-              <g class="form-icon" transform="translate(567 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(567 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="584" cy="150" r="24" />
-              <text class="station-label" x="584" y="228">Best By</text>
+              <circle class="station-node" cx="584" cy="78" r="24" />
+              <text class="station-label" x="584" y="126">Best By</text>
             </g>
 
             <g class="station" data-station="packaging">
-              <g class="form-icon" transform="translate(735 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(735 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="752" cy="150" r="24" />
-              <text class="station-label" x="752" y="228">Packaging</text>
+              <circle class="station-node" cx="752" cy="78" r="24" />
+              <text class="station-label" x="752" y="126">Packaging</text>
             </g>
 
             <g class="station" data-station="finished">
-              <g class="form-icon" transform="translate(903 53)" aria-hidden="true">
+              <g class="form-icon" transform="translate(903 12)" aria-hidden="true">
                 <rect x="0" y="0" width="34" height="42" rx="3" />
                 <path d="M8 12 H26 M8 21 H26 M8 30 H21" />
               </g>
-              <circle class="station-node" cx="920" cy="150" r="24" />
-              <text class="station-label" x="920" y="220">
+              <circle class="station-node" cx="920" cy="78" r="24" />
+              <text class="station-label" x="920" y="117">
                 <tspan x="920">Finished</tspan>
-                <tspan x="920" dy="28">Case</tspan>
+                <tspan x="920" dy="23">Case</tspan>
               </text>
             </g>
 
-            <g class="product-cup" id="product-cup" transform="translate(80 150)" aria-hidden="true">
+            <g class="product-cup" id="product-cup" transform="translate(80 78)" aria-hidden="true">
               <path class="cup-body" d="M-12 -20 L-9 10 Q0 16 9 10 L12 -20 Z" />
               <rect class="cup-lid" x="-14" y="-24" width="28" height="6" rx="3" />
             </g>
@@ -725,6 +907,7 @@
         </div>
 
         <div class="line-steps">
+          <div class="step-marker" data-step-marker="incoming" aria-hidden="true"></div>
           <article class="line-step" data-step="incoming">
             <div class="step-copy">
               <p class="eyebrow">Step 1</p>
@@ -741,7 +924,32 @@
                 <path class="illustration-line" d="M66 24 Q70 14 78 17 M97 19 Q102 9 109 14 M124 28 Q129 19 136 22" />
               </svg>
             </div>
+            <div class="paper-form" role="group" aria-label="Example paper check form for incoming material">
+              <div class="paper-form-header">
+                <h4>Incoming Material Check</h4>
+                <span class="paper-form-step">Paper record · Step 1</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Check</th><th scope="col">Pass / Fail</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Incoming material condition</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
+          <div class="step-marker" data-step-marker="fill" aria-hidden="true"></div>
           <article class="line-step" data-step="fill">
             <div class="step-copy">
               <p class="eyebrow">Step 2</p>
@@ -757,7 +965,39 @@
                 <path class="illustration-line" d="M84 33 H96" />
               </svg>
             </div>
+            <div class="paper-form paper-form--measure" role="group" aria-label="Example paper measurement form for fill">
+              <div class="paper-form-header">
+                <h4>Fill Check</h4>
+                <span class="paper-form-step">Paper record · Step 2</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Measurement</th><th scope="col">Recorded Value</th><th scope="col">Units</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Fill weight</th>
+                    <td><span class="paper-value-line" aria-hidden="true"></span></td>
+                    <td>g</td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Product temperature</th>
+                    <td><span class="paper-value-line" aria-hidden="true"></span></td>
+                    <td>°F</td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
+          <div class="step-marker" data-step-marker="seal" aria-hidden="true"></div>
           <article class="line-step" data-step="seal">
             <div class="step-copy">
               <p class="eyebrow">Step 3</p>
@@ -773,7 +1013,37 @@
                 <path class="illustration-line" d="M119 54 H141 M130 43 V65" />
               </svg>
             </div>
+            <div class="paper-form" role="group" aria-label="Example paper check form for seal">
+              <div class="paper-form-header">
+                <h4>Seal Check</h4>
+                <span class="paper-form-step">Paper record · Step 3</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Check</th><th scope="col">Pass / Fail</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Seal integrity</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">No blemishes</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
+          <div class="step-marker" data-step-marker="bestby" aria-hidden="true"></div>
           <article class="line-step" data-step="bestby">
             <div class="step-copy">
               <p class="eyebrow">Step 4</p>
@@ -788,7 +1058,37 @@
                 <path class="illustration-line" d="M58 75 H122" />
               </svg>
             </div>
+            <div class="paper-form" role="group" aria-label="Example paper check form for best-by date">
+              <div class="paper-form-header">
+                <h4>Best By Date Check</h4>
+                <span class="paper-form-step">Paper record · Step 4</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Check</th><th scope="col">Pass / Fail</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Best-by date is clear and legible</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Best-by date is correct</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
+          <div class="step-marker" data-step-marker="packaging" aria-hidden="true"></div>
           <article class="line-step" data-step="packaging">
             <div class="step-copy">
               <p class="eyebrow">Step 5</p>
@@ -802,7 +1102,32 @@
                 <path class="illustration-accent" d="M43 25 H61 L64 52 H40 Z M73 25 H91 L94 52 H70 Z M103 25 H121 L124 52 H100 Z M58 62 H76 L79 89 H55 Z M89 62 H107 L110 89 H86 Z M120 62 H138 L141 89 H117 Z" />
               </svg>
             </div>
+            <div class="paper-form" role="group" aria-label="Example paper check form for packaging">
+              <div class="paper-form-header">
+                <h4>Packaging Check</h4>
+                <span class="paper-form-step">Paper record · Step 5</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Check</th><th scope="col">Pass / Fail</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Cups properly packaged in six-packs</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
+          <div class="step-marker" data-step-marker="finished" aria-hidden="true"></div>
           <article class="line-step" data-step="finished">
             <div class="step-copy">
               <p class="eyebrow">Step 6</p>
@@ -821,12 +1146,42 @@
                 <path class="illustration-line" d="M22 100 H158 M30 111 H150 M45 100 V111 M90 100 V111 M135 100 V111" />
               </svg>
             </div>
+            <div class="paper-form" role="group" aria-label="Example paper check form for finished case">
+              <div class="paper-form-header">
+                <h4>Finished Case Check</h4>
+                <span class="paper-form-step">Paper record · Step 6</span>
+              </div>
+              <div class="paper-form-fields" aria-label="Operator, date, and shift fields">
+                <div class="paper-form-field"><span>Operator</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Date</span><span aria-hidden="true"></span></div>
+                <div class="paper-form-field"><span>Shift</span><span aria-hidden="true"></span></div>
+              </div>
+              <table>
+                <thead>
+                  <tr><th scope="col">Check</th><th scope="col">Pass / Fail</th><th scope="col">Initials</th></tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Eight six-packs per case</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Case label applied before palletizing</th>
+                    <td><span class="paper-box" aria-hidden="true"></span><span class="paper-box" aria-hidden="true"></span></td>
+                    <td><span class="paper-initials" aria-hidden="true"></span></td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="paper-form-note">Example only — the operator records the result on paper.</p>
+            </div>
           </article>
         </div>
-        <div class="line-reset" data-line-reset aria-hidden="true"></div>
+      </section>
 
-        <section class="story-continuation scene" id="paper-problem" data-narrative="paper">
-          <div class="story-copy">
+      <section class="story-continuation" aria-label="What happens next">
+        <div class="line-closing-grid">
+          <article class="narrative-card scene" id="paper-problem" data-narrative="paper">
             <p class="eyebrow">The paper problem</p>
             <h2>Good checks can get lost in the paperwork.</h2>
             <ul class="problem-list">
@@ -834,32 +1189,25 @@
               <li>A check that takes longer to write down than to do</li>
               <li>A radio call that gets garbled</li>
             </ul>
-            <p class="narrative-callout">The same handoffs connect every station on the line.</p>
             <p class="caption">Illustrative story with made-up data.</p>
-          </div>
-        </section>
+          </article>
 
-        <section class="story-continuation scene move-section" id="your-move" data-narrative="move">
-          <div class="story-copy">
+          <article class="narrative-card scene" id="your-move" data-narrative="move">
             <p class="eyebrow">Your move</p>
             <h2>You walk the floor and ask the operators what they actually need.</h2>
-            <p class="narrative-callout">Every station matters. Follow the line as you listen and map the work.</p>
             <p class="caption">Illustrative story with made-up data.</p>
-          </div>
-        </section>
+          </article>
 
-        <section class="story-continuation scene ending" id="ending" data-narrative="ending">
-          <div class="story-copy">
+          <article class="narrative-card scene" id="ending" data-narrative="ending">
             <p class="eyebrow">The next step</p>
             <h2>The paper has to become data.</h2>
             <p class="lead">
               Now you need to turn these forms into a system your operators will actually use.
             </p>
-            <p class="narrative-callout">The finished-case station is where the records and handoffs come together.</p>
             <a class="button" href="./simulator.html">Open the simulator</a>
             <p class="caption">Illustrative story with made-up data.</p>
-          </div>
-        </section>
+          </article>
+        </div>
       </section>
     </main>
 
@@ -867,8 +1215,8 @@
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       const revealSections = document.querySelectorAll(".scene");
       const lineSteps = document.querySelectorAll(".line-step");
-      const storyContinuations = document.querySelectorAll("[data-narrative]");
-      const lineReset = document.querySelector("[data-line-reset]");
+      const stepMarkers = document.querySelectorAll(".step-marker[data-step-marker]");
+      const storyContinuations = document.querySelectorAll(".narrative-card[data-narrative]");
       const stations = document.querySelectorAll(".station");
       const cup = document.getElementById("product-cup");
       const lineArt = document.querySelector(".line-art");
@@ -920,17 +1268,19 @@
           title: "Walk the floor",
           checks: ["Ask operators what they need", "Map the work as it happens"],
           activeStations: ["incoming", "fill", "seal", "bestby", "packaging", "finished"],
-          cupPosition: 584,
+          cupPosition: 500,
         },
         ending: {
           title: "Build a usable system",
           checks: ["Capture checks as data", "Connect team handoffs"],
-          activeStations: ["finished"],
-          cupPosition: 920,
+          activeStations: ["incoming", "fill", "seal", "bestby", "packaging", "finished"],
+          cupPosition: 500,
         },
       };
       let cupPosition = 80;
       let cupAnimationFrame;
+      let activeContentObserver;
+      let activationLineY = 0;
 
       function revealAllSections() {
         revealSections.forEach((section) => section.classList.add("is-visible"));
@@ -965,7 +1315,7 @@
 
         if (reducedMotion) {
           cupPosition = destination;
-          cup.setAttribute("transform", `translate(${cupPosition} 150)`);
+          cup.setAttribute("transform", `translate(${cupPosition} 78)`);
           return;
         }
 
@@ -977,7 +1327,7 @@
           const progress = Math.min((now - startedAt) / duration, 1);
           const eased = 1 - (1 - progress) ** 3;
           cupPosition = start + (destination - start) * eased;
-          cup.setAttribute("transform", `translate(${cupPosition} 150)`);
+          cup.setAttribute("transform", `translate(${cupPosition} 78)`);
 
           if (progress < 1) {
             cupAnimationFrame = requestAnimationFrame(animate);
@@ -1070,50 +1420,59 @@
         showCallout(detail.title, detail.checks, detail.cupPosition);
       }
 
-      if ("IntersectionObserver" in window) {
-        const stepObserver = new IntersectionObserver(
+      function observeActiveContent() {
+        if (!("IntersectionObserver" in window)) {
+          revealAllSections();
+          return;
+        }
+
+        activeContentObserver?.disconnect();
+        const stageHeight = document.querySelector(".line-stage").getBoundingClientRect().height;
+        const zoneHeight = Math.min(80, Math.max(48, window.innerHeight * 0.08));
+        const zoneTop = Math.min(stageHeight + 12, window.innerHeight * 0.72);
+        activationLineY = zoneTop + zoneHeight / 2;
+        const bottomInset = Math.max(0, window.innerHeight - zoneTop - zoneHeight);
+        activeContentObserver = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
               entry.target.classList.toggle("is-in-view", entry.isIntersecting);
             });
 
             const activeItems = [
-              ...document.querySelectorAll(".line-step.is-in-view, [data-narrative].is-in-view"),
+              ...document.querySelectorAll(".step-marker.is-in-view, .narrative-card.is-in-view"),
             ].sort(
-              (a, b) =>
-                Math.abs(a.getBoundingClientRect().top + a.offsetHeight / 2 - window.innerHeight / 2) -
-                Math.abs(b.getBoundingClientRect().top + b.offsetHeight / 2 - window.innerHeight / 2),
+              (a, b) => {
+                const aY = a.matches(".step-marker")
+                  ? a.getBoundingClientRect().top
+                  : a.getBoundingClientRect().top + a.offsetHeight / 2;
+                const bY = b.matches(".step-marker")
+                  ? b.getBoundingClientRect().top
+                  : b.getBoundingClientRect().top + b.offsetHeight / 2;
+                return Math.abs(aY - activationLineY) - Math.abs(bY - activationLineY);
+              },
             );
             const activeItem = activeItems[0];
 
-            if (activeItem?.matches(".line-step")) {
-              activateStep(activeItem.dataset.step);
+            if (activeItem?.matches(".step-marker")) {
+              activateStep(activeItem.dataset.stepMarker);
             } else if (activeItem?.hasAttribute("data-narrative")) {
               activateNarrative(activeItem);
-            } else {
-              clearDiagramFocus();
             }
           },
-          { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
-        );
-
-        lineSteps.forEach((step) => stepObserver.observe(step));
-        storyContinuations.forEach((section) => stepObserver.observe(section));
-
-        const resetObserver = new IntersectionObserver(
-          (entries) => {
-            if (entries.some((entry) => entry.isIntersecting)) {
-              clearDiagramFocus();
-            }
+          {
+            rootMargin: `-${zoneTop}px 0px -${bottomInset}px`,
+            threshold: 0,
           },
-          { rootMargin: "-30% 0px -30% 0px", threshold: 0 },
         );
-        resetObserver.observe(lineReset);
-      } else {
-        revealAllSections();
+
+        stepMarkers.forEach((marker) => activeContentObserver.observe(marker));
+        storyContinuations.forEach((section) => activeContentObserver.observe(section));
       }
 
+      observeActiveContent();
+
       window.addEventListener("resize", () => {
+        observeActiveContent();
         const activeCallout = callout.classList.contains("is-visible");
         if (activeCallout) {
           const activeStation = document.querySelector(".station.is-active");
