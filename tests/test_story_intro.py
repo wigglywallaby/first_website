@@ -167,6 +167,15 @@ class StoryIntroTest(unittest.TestCase):
         self.assertIn("clone.remove();", reverse_logic)
 
     def test_reverse_handoff_observer_handles_upward_exit_and_resets_transition(self):
+        threshold = re.search(
+            r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
+            r".*?\{\s*threshold\s*:\s*([0-9.]+)\s*\}",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(threshold)
+        self.assertLessEqual(float(threshold.group(1)), 0.01)
+
         observer = re.search(
             r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
             r"\s*\(\s*\(entries(?:,\s*observer)?\)\s*=>\s*\{"
