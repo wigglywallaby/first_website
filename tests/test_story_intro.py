@@ -28,7 +28,7 @@ class StoryIntroTest(unittest.TestCase):
         problem_list = re.search(r"\.problem-list\s*\{([^}]*)\}", HTML, re.DOTALL)
         self.assertIsNotNone(problem_list)
         self.assertIn(
-            "grid-template-columns: repeat(3, minmax(0, 1fr))",
+            "grid-template-columns: 1fr",
             problem_list.group(1),
         )
 
