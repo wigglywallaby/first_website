@@ -208,7 +208,7 @@ class StoryIntroTest(unittest.TestCase):
             r"if\s*\(\s*!handoffStarted\s*\)",
         )
 
-    def test_reverse_handoff_observer_handles_upward_exit_and_resets_transition(self):
+    def test_reverse_handoff_observer_and_scroll_listener_reverse_at_boundaries(self):
         threshold = re.search(
             r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
             r".*?\{\s*threshold\s*:\s*([0-9.]+)\s*\}",
@@ -285,6 +285,40 @@ class StoryIntroTest(unittest.TestCase):
         )
         self.assertIsNotNone(no_observer_fallback)
 
+        listener = re.search(
+            r"window\.addEventListener\(\s*\"scroll\",\s*\(\)\s*=>\s*\{"
+            r"(.*?)\n\s*\},\s*\{\s*passive:\s*true\s*\}\s*,?\s*\)",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(listener)
+        listener_logic = listener.group(1)
+        self.assertRegex(
+            listener_logic,
+            r"lineEntered\s*&&\s*scrollingUp\s*&&\s*window\.scrollY\s*<\s*200",
+        )
+        self.assertIn('lineSection.classList.remove("is-transitioned")', listener_logic)
+        self.assertIn("runPaperReverseHandoff()", listener_logic)
+        self.assertIn("handoffStarted = false;", listener_logic)
+        self.assertIn("lineEntered = false;", listener_logic)
+        self.assertRegex(HTML, r"let\s+lineEntered\s*=\s*false")
+        self.assertRegex(HTML, r"let\s+handoffStarted\s*=\s*false")
+        self.assertRegex(HTML, r"let\s+previousScrollY\s*=\s*window\.scrollY")
+        observer_start = HTML.index("const lineTransitionObserver")
+        for declaration in (
+            "let previousScrollY = window.scrollY;",
+            "let handoffStarted = false;",
+            "let lineEntered = false;",
+        ):
+            with self.subTest(declaration=declaration):
+                self.assertLess(HTML.index(declaration), observer_start)
+        self.assertRegex(
+            listener_logic,
+            r"if\s*\(!reducedMotion\)\s*\{\s*"
+            r'lineSection\.classList\.remove\("is-transitioned"\);\s*'
+            r"runPaperReverseHandoff\(\);",
+        )
+
     def test_reverse_handoff_respects_reduced_motion(self):
         reverse_function = re.search(
             r"function\s+runPaperReverseHandoff\s*\(\s*\)\s*\{(.*?)\n      }",
@@ -323,7 +357,6 @@ class StoryIntroTest(unittest.TestCase):
             r"\s*lineSection\.classList\.remove\(\"is-transitioned\"\);"
             r"\s*runPaperReverseHandoff\(\);",
         )
-
 
 if __name__ == "__main__":
     unittest.main()

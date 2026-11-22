@@ -1911,14 +1911,14 @@
       const lineSection = document.getElementById("the-line");
       if (lineSection) {
         lineSection.classList.remove("is-transitioned");
+        let previousScrollY = window.scrollY;
+        let handoffStarted = false;
+        let lineEntered = false;
         if ("IntersectionObserver" in window) {
           if (reducedMotion) {
             lineSection.classList.add("is-transitioned");
           }
 
-          let previousScrollY = window.scrollY;
-          let handoffStarted = false;
-          let lineEntered = false;
           const lineTransitionObserver = new IntersectionObserver(
             (entries) => {
               entries.forEach((entry) => {
@@ -1968,6 +1968,22 @@
             { threshold: 0.01 },
           );
           lineTransitionObserver.observe(lineSection);
+          window.addEventListener(
+            "scroll",
+            () => {
+              const scrollingUp = window.scrollY < previousScrollY;
+              if (lineEntered && scrollingUp && window.scrollY < 200) {
+                if (!reducedMotion) {
+                  lineSection.classList.remove("is-transitioned");
+                  runPaperReverseHandoff();
+                }
+                handoffStarted = false;
+                lineEntered = false;
+              }
+              previousScrollY = window.scrollY;
+            },
+            { passive: true },
+          );
         } else {
           lineSection.classList.add("is-transitioned");
         }
