@@ -14,10 +14,15 @@ class StoryIntroTest(unittest.TestCase):
             0,
         )
 
-    def test_production_line_steps_are_hidden(self):
+    def test_production_line_check_forms_are_visible(self):
         line_step = re.search(r"\.line-step\s*\{([^}]*)\}", HTML, re.DOTALL)
         self.assertIsNotNone(line_step)
-        self.assertIn("display: none", line_step.group(1))
+        self.assertIn("display: grid", line_step.group(1))
+        self.assertIn(".paper-form", HTML)
+        self.assertEqual(
+            len(re.findall(r'<div class="paper-form(?:\s[^"]*)?"', HTML)),
+            6,
+        )
 
     def test_production_line_layout_and_stations(self):
         problem_list = re.search(r"\.problem-list\s*\{([^}]*)\}", HTML, re.DOTALL)
