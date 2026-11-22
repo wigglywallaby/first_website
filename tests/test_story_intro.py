@@ -166,6 +166,48 @@ class StoryIntroTest(unittest.TestCase):
         self.assertIn(".catch(() => clone.remove())", reverse_logic)
         self.assertIn("clone.remove();", reverse_logic)
 
+    def test_reverse_handoff_observer_reverses_on_upward_entry_before_forward_entry(self):
+        observer = re.search(
+            r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
+            r"\s*\(\s*\(entries(?:,\s*observer)?\)\s*=>\s*\{"
+            r"(.*?)\n\s*\}\s*,\s*\{\s*threshold",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(observer)
+        observer_logic = observer.group(1)
+
+        entry_logic = re.search(
+            r"if\s*\(\s*entry\.isIntersecting\s*\)\s*\{(.*?)\n\s*\}",
+            observer_logic,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(entry_logic)
+        entry_branch = entry_logic.group(1)
+        upward_entry = re.search(
+            r"if\s*\([\s\S]*?window\.scrollY\s*<\s*previousScrollY"
+            r"[\s\S]*?lineEntered"
+            r"[\s\S]*?entry\.boundingClientRect\.top\s*>\s*0"
+            r"[\s\S]*?\)\s*\{",
+            entry_branch,
+        )
+        self.assertIsNotNone(upward_entry)
+        self.assertIn('lineSection.classList.remove("is-transitioned")', entry_branch)
+        self.assertIn("handoffStarted = false;", entry_branch)
+        self.assertIn("lineEntered = false;", entry_branch)
+        self.assertRegex(
+            entry_branch,
+            r"if\s*\(\s*!reducedMotion\s*\)\s*\{",
+        )
+        self.assertIn("runPaperReverseHandoff()", entry_branch)
+        self.assertRegex(
+            observer_logic,
+            r"\belse\s*\{\s*"
+            r"lineEntered\s*=\s*true;\s*"
+            r'lineSection\.classList\.add\("is-transitioned"\);\s*'
+            r"if\s*\(\s*!handoffStarted\s*\)",
+        )
+
     def test_reverse_handoff_observer_handles_upward_exit_and_resets_transition(self):
         threshold = re.search(
             r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"

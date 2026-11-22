@@ -1923,12 +1923,25 @@
             (entries) => {
               entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                  lineEntered = true;
-                  lineSection.classList.add("is-transitioned");
-                  if (!handoffStarted) {
-                    handoffStarted = true;
+                  if (
+                    window.scrollY < previousScrollY &&
+                    lineEntered &&
+                    entry.boundingClientRect.top > 0
+                  ) {
+                    lineSection.classList.remove("is-transitioned");
+                    handoffStarted = false;
+                    lineEntered = false;
                     if (!reducedMotion) {
-                      runPaperHandoff();
+                      runPaperReverseHandoff();
+                    }
+                  } else {
+                    lineEntered = true;
+                    lineSection.classList.add("is-transitioned");
+                    if (!handoffStarted) {
+                      handoffStarted = true;
+                      if (!reducedMotion) {
+                        runPaperHandoff();
+                      }
                     }
                   }
                 }
