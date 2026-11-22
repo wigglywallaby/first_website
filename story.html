@@ -79,6 +79,10 @@
         padding: 48px 0;
       }
 
+      #intro {
+        min-height: 90svh;
+      }
+
       .story-copy {
         width: 100%;
       }
@@ -159,8 +163,8 @@
       }
 
       .line-heading {
-        padding-bottom: 16px;
-        padding-top: 48px;
+        padding-bottom: 8px;
+        padding-top: 24px;
       }
 
       .line-stage {
@@ -312,7 +316,6 @@
       }
 
       .line-steps {
-        height: 348vh;
         margin: 0 auto;
         max-width: 900px;
         padding: 0 24px;
@@ -324,7 +327,21 @@
       }
 
       .line-step {
+        align-items: center;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        min-height: 58vh;
+        padding: 32px 0;
+      }
+
+      .line-step .step-copy,
+      .line-step .step-illustration {
         display: none;
+      }
+
+      .line-step .paper-form {
+        grid-column: 1 / -1;
+        justify-self: center;
       }
 
       #the-line.is-transitioned .form-icon rect,
@@ -828,7 +845,7 @@
         }
 
         .line-heading {
-          padding-top: 32px;
+          padding-top: 24px;
         }
 
         .callout-track {
@@ -855,7 +872,9 @@
         }
 
         .line-step {
-          display: none;
+          grid-template-columns: minmax(0, 1fr);
+          min-height: 55vh;
+          padding: 32px 0;
         }
 
         .step-copy {
@@ -1619,6 +1638,87 @@
         });
       }
 
+      function runPaperReverseHandoff() {
+        if (reducedMotion) {
+          return;
+        }
+
+        const stageStations = [
+          ["Incoming", "incoming"],
+          ["Fill", "fill"],
+          ["Seal", "seal"],
+          ["Best By", "bestby"],
+          ["Packaging", "packaging"],
+          ["Finished Case", "finished"],
+        ];
+
+        stageStations.forEach(([stage, station], index) => {
+          const icon = document.querySelector(`.station[data-station="${station}"] .form-icon`);
+          const sheet = document.querySelector(`.paper-sheet[data-stage="${stage}"]`);
+          if (!icon || !sheet) {
+            return;
+          }
+
+          const source = icon.getBoundingClientRect();
+          const destination = sheet.getBoundingClientRect();
+          if (!source.width || !source.height || !destination.width || !destination.height) {
+            return;
+          }
+
+          const sourceCenterX = source.left + source.width / 2;
+          const sourceCenterY = source.top + source.height / 2;
+          const destinationCenterX = destination.left + destination.width / 2;
+          const destinationCenterY = destination.top + destination.height / 2;
+          const deltaX = destinationCenterX - sourceCenterX;
+          const deltaY = destinationCenterY - sourceCenterY;
+          const sourceScale = Math.min(
+            source.width / destination.width,
+            source.height / destination.height,
+          );
+          const clone = document.createElement("div");
+          clone.className = "paper-handoff-clone";
+          clone.setAttribute("aria-hidden", "true");
+          clone.textContent = stage;
+          clone.style.position = "fixed";
+          clone.style.left = `${sourceCenterX - destination.width / 2}px`;
+          clone.style.top = `${sourceCenterY - destination.height / 2}px`;
+          clone.style.width = `${destination.width}px`;
+          clone.style.height = `${destination.height}px`;
+          document.body.appendChild(clone);
+
+          if (typeof clone.animate === "function") {
+            const animation = clone.animate(
+              [
+                {
+                  opacity: 1,
+                  transform: `translate(0, 0) scale(${sourceScale})`,
+                },
+                {
+                  opacity: 1,
+                  transform: `translate(${deltaX * 0.72}px, ${deltaY * 0.72}px) scale(1)`,
+                  offset: 0.72,
+                },
+                {
+                  opacity: 0,
+                  transform: `translate(${deltaX}px, ${deltaY}px) scale(1)`,
+                },
+              ],
+              {
+                delay: index * 110,
+                duration: 850,
+                easing: "cubic-bezier(.22,.75,.28,1)",
+                fill: "both",
+              },
+            );
+            animation.finished
+              .then(() => clone.remove())
+              .catch(() => clone.remove());
+          } else {
+            clone.remove();
+          }
+        });
+      }
+
       function revealAllSections() {
         revealSections.forEach((section) => section.classList.add("is-visible"));
       }
@@ -1811,25 +1911,81 @@
       const lineSection = document.getElementById("the-line");
       if (lineSection) {
         lineSection.classList.remove("is-transitioned");
+        let previousScrollY = window.scrollY;
+        let handoffStarted = false;
+        let lineEntered = false;
         if ("IntersectionObserver" in window) {
-          let handoffStarted = false;
+          if (reducedMotion) {
+            lineSection.classList.add("is-transitioned");
+          }
+
           const lineTransitionObserver = new IntersectionObserver(
-            (entries, observer) => {
+            (entries) => {
               entries.forEach((entry) => {
-                if (entry.isIntersecting && !handoffStarted) {
-                  handoffStarted = true;
-                  lineSection.classList.add("is-transitioned");
-                  runPaperHandoff();
-                  observer.unobserve(lineSection);
+                if (entry.isIntersecting) {
+                  if (
+                    window.scrollY < previousScrollY &&
+                    lineEntered &&
+                    entry.boundingClientRect.top > 0
+                  ) {
+                    lineSection.classList.remove("is-transitioned");
+                    handoffStarted = false;
+                    lineEntered = false;
+                    if (!reducedMotion) {
+                      runPaperReverseHandoff();
+                    }
+                  } else {
+                    lineEntered = true;
+                    lineSection.classList.add("is-transitioned");
+                    if (!handoffStarted) {
+                      handoffStarted = true;
+                      if (!reducedMotion) {
+                        runPaperHandoff();
+                      }
+                    }
+                  }
+                }
+
+                if (!entry.isIntersecting) {
+                  const wasLineEntered = lineEntered;
+                  handoffStarted = false;
+                  lineEntered = false;
+
+                  if (
+                    wasLineEntered &&
+                    entry.boundingClientRect.bottom <= 0 &&
+                    window.scrollY < previousScrollY
+                  ) {
+                    if (!reducedMotion) {
+                      lineSection.classList.remove("is-transitioned");
+                      runPaperReverseHandoff();
+                    }
+                  }
                 }
               });
+              previousScrollY = window.scrollY;
             },
-            { threshold: 0.12 },
+            { threshold: 0.01 },
           );
           lineTransitionObserver.observe(lineSection);
+          window.addEventListener(
+            "scroll",
+            () => {
+              const scrollingUp = window.scrollY < previousScrollY;
+              if (lineEntered && scrollingUp && window.scrollY < 200) {
+                if (!reducedMotion) {
+                  lineSection.classList.remove("is-transitioned");
+                  runPaperReverseHandoff();
+                }
+                handoffStarted = false;
+                lineEntered = false;
+              }
+              previousScrollY = window.scrollY;
+            },
+            { passive: true },
+          );
         } else {
           lineSection.classList.add("is-transitioned");
-          runPaperHandoff();
         }
       }
 
