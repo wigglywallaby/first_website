@@ -193,6 +193,41 @@ class StoryIntroTest(unittest.TestCase):
         self.assertIn('lineSection.classList.add("is-transitioned")', observer_logic)
         self.assertRegex(observer_logic, r"if\s*\(!reducedMotion\)\s*\{\s*runPaperHandoff\(\);")
 
+        exit_logic_match = re.search(
+            r"if\s*\(\s*!entry\.isIntersecting\s*\)\s*\{(.*?)\n\s*\}",
+            observer_logic,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(exit_logic_match)
+        exit_logic = exit_logic_match.group(1)
+        captured_line_entered = re.search(
+            r"(?:const|let)\s+(\w+)\s*=\s*lineEntered",
+            exit_logic,
+        )
+        self.assertIsNotNone(captured_line_entered)
+        prior_line_entered = captured_line_entered.group(1)
+        reset_handoff = re.search(r"handoffStarted\s*=\s*false", exit_logic)
+        reset_line = re.search(r"lineEntered\s*=\s*false", exit_logic)
+        reverse_decision = re.search(
+            rf"if\s*\([^)]*\b{re.escape(prior_line_entered)}\b[^)]*"
+            r"entry\.boundingClientRect\.bottom\s*<=\s*0"
+            r"[^)]*window\.scrollY\s*<\s*previousScrollY",
+            exit_logic,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(reset_handoff)
+        self.assertIsNotNone(reset_line)
+        self.assertIsNotNone(reverse_decision)
+        self.assertLess(captured_line_entered.start(), reset_handoff.start())
+        self.assertLess(captured_line_entered.start(), reset_line.start())
+        self.assertLess(reset_handoff.start(), reverse_decision.start())
+        self.assertLess(reset_line.start(), reverse_decision.start())
+        self.assertIn("runPaperReverseHandoff()", exit_logic[reverse_decision.start():])
+        self.assertIn(
+            'lineSection.classList.remove("is-transitioned")',
+            exit_logic[reverse_decision.start():],
+        )
+
         no_observer_fallback = re.search(
             r"\}\s*else\s*\{\s*lineSection\.classList\.add\(\"is-transitioned\"\);\s*\}",
             HTML,
