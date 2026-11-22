@@ -110,6 +110,110 @@ class StoryIntroTest(unittest.TestCase):
         self.assertIn("text-align: left", problem_li.group(1))
         self.assertIn("white-space: normal", problem_li.group(1))
 
+    def test_opening_and_line_layout_enter_earlier(self):
+        intro = re.search(r"#intro\s*\{([^}]*)\}", HTML, re.DOTALL)
+        self.assertIsNotNone(intro)
+        self.assertIn("min-height: 90svh", intro.group(1))
+
+        line_story = re.search(r"\.line-story\s*\{([^}]*)\}", HTML, re.DOTALL)
+        self.assertIsNotNone(line_story)
+        self.assertIn("min-height: auto", line_story.group(1))
+
+        line_heading = re.search(r"\.line-heading\s*\{([^}]*)\}", HTML, re.DOTALL)
+        self.assertIsNotNone(line_heading)
+        self.assertRegex(line_heading.group(1), r"padding-top:\s*24px")
+        self.assertRegex(line_heading.group(1), r"padding-bottom:\s*8px")
+
+        mobile = re.search(r"@media\s*\(max-width:\s*700px\)\s*\{", HTML)
+        self.assertIsNotNone(mobile)
+        mobile_heading = re.search(
+            r"\.line-heading\s*\{([^}]*)\}",
+            HTML[mobile.start():],
+            re.DOTALL,
+        )
+        self.assertIsNotNone(mobile_heading)
+        self.assertRegex(mobile_heading.group(1), r"padding-top:\s*24px")
+
+    def test_reverse_paper_handoff_function_and_stage_mappings_exist(self):
+        reverse_function = re.search(
+            r"function\s+runPaperReverseHandoff\s*\(\s*\)\s*\{(.*?)\n      }",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(reverse_function)
+        reverse_logic = reverse_function.group(1)
+
+        mappings = (
+            ("Incoming", "incoming"),
+            ("Fill", "fill"),
+            ("Seal", "seal"),
+            ("Best By", "bestby"),
+            ("Packaging", "packaging"),
+            ("Finished Case", "finished"),
+        )
+        for stage, station in mappings:
+            with self.subTest(stage=stage, station=station):
+                self.assertRegex(
+                    reverse_logic,
+                    rf'["\']{re.escape(stage)}["\']\s*,\s*["\']{re.escape(station)}["\']',
+                )
+        self.assertIn('if (reducedMotion)', reverse_logic)
+        self.assertIn('.station[data-station="${station}"] .form-icon', reverse_logic)
+        self.assertIn('.paper-sheet[data-stage="${stage}"]', reverse_logic)
+        self.assertIn('clone.style.position = "fixed"', reverse_logic)
+        self.assertIn('fill: "both"', reverse_logic)
+        self.assertIn("animation.finished", reverse_logic)
+        self.assertIn(".catch(() => clone.remove())", reverse_logic)
+        self.assertIn("clone.remove();", reverse_logic)
+
+    def test_reverse_handoff_observer_handles_upward_exit_and_resets_transition(self):
+        observer = re.search(
+            r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
+            r"\s*\(\s*\(entries(?:,\s*observer)?\)\s*=>\s*\{"
+            r"(.*?)\n\s*\}\s*,\s*\{\s*threshold",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(observer)
+        observer_logic = observer.group(1)
+
+        self.assertIn("entry.isIntersecting", observer_logic)
+        self.assertIn("runPaperReverseHandoff()", observer_logic)
+        self.assertIn("previousScrollY", HTML)
+        self.assertIn("handoffStarted", HTML)
+        self.assertIn("lineEntered", HTML)
+        self.assertRegex(
+            observer_logic,
+            r"entry\.boundingClientRect\.bottom\s*<=\s*0",
+        )
+        self.assertRegex(observer_logic, r"window\.scrollY\s*<\s*previousScrollY")
+        self.assertRegex(observer_logic, r"previousScrollY\s*=\s*window\.scrollY")
+        self.assertIn('lineSection.classList.remove("is-transitioned")', observer_logic)
+        self.assertNotIn("unobserve(lineSection)", observer_logic)
+        self.assertIn('lineSection.classList.add("is-transitioned")', observer_logic)
+        self.assertRegex(observer_logic, r"if\s*\(!reducedMotion\)\s*\{\s*runPaperHandoff\(\);")
+
+        no_observer_fallback = re.search(
+            r"\}\s*else\s*\{\s*lineSection\.classList\.add\(\"is-transitioned\"\);\s*\}",
+            HTML,
+        )
+        self.assertIsNotNone(no_observer_fallback)
+
+    def test_reverse_handoff_respects_reduced_motion(self):
+        reverse_function = re.search(
+            r"function\s+runPaperReverseHandoff\s*\(\s*\)\s*\{(.*?)\n      }",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(reverse_function)
+        reverse_logic = reverse_function.group(1)
+
+        guard = re.search(
+            r"\bif\s*\(\s*reducedMotion\s*\)\s*\{\s*return;\s*\}",
+            reverse_logic,
+        )
+        self.assertIsNotNone(guard)
+
 
 if __name__ == "__main__":
     unittest.main()
