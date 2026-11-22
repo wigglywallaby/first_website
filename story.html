@@ -641,6 +641,155 @@
         outline-offset: 4px;
       }
 
+      .paper-stack-intro {
+        align-items: center;
+        display: grid;
+        gap: clamp(36px, 7vw, 96px);
+        grid-template-columns: minmax(300px, 440px) minmax(280px, 560px);
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 1120px;
+        width: 100%;
+      }
+
+      .paper-stack {
+        height: 330px;
+        position: relative;
+      }
+
+      .paper-stack::after {
+        background: color-mix(in srgb, var(--text) 16%, transparent);
+        border-radius: 50%;
+        bottom: 12px;
+        content: "";
+        height: 18px;
+        left: 50%;
+        position: absolute;
+        transform: translateX(-50%);
+        width: 260px;
+      }
+
+      .paper-sheet {
+        background:
+          repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 24px,
+            color-mix(in srgb, var(--line) 58%, transparent) 25px
+          ),
+          var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        bottom: 25px;
+        box-shadow: 0 12px 22px rgb(32 37 33 / 10%);
+        height: 210px;
+        left: 50%;
+        padding: 24px 22px;
+        position: absolute;
+        transform: translate(calc(-50% + var(--paper-x)), 0) rotate(var(--paper-rotation));
+        transform-origin: 50% 100%;
+        width: 220px;
+      }
+
+      .paper-sheet:nth-child(1) {
+        --paper-rotation: -7deg;
+        --paper-x: -10px;
+        animation-delay: 80ms;
+        z-index: 1;
+      }
+
+      .paper-sheet:nth-child(2) {
+        --paper-rotation: 5deg;
+        --paper-x: 8px;
+        animation-delay: 160ms;
+        z-index: 2;
+      }
+
+      .paper-sheet:nth-child(3) {
+        --paper-rotation: -3deg;
+        --paper-x: -4px;
+        animation-delay: 240ms;
+        z-index: 3;
+      }
+
+      .paper-sheet:nth-child(4) {
+        --paper-rotation: 6deg;
+        --paper-x: 12px;
+        animation-delay: 320ms;
+        z-index: 4;
+      }
+
+      .paper-sheet:nth-child(5) {
+        --paper-rotation: -5deg;
+        --paper-x: -12px;
+        animation-delay: 400ms;
+        z-index: 5;
+      }
+
+      .paper-sheet:nth-child(6) {
+        --paper-rotation: 2deg;
+        --paper-x: 2px;
+        animation-delay: 480ms;
+        z-index: 6;
+      }
+
+      .js .paper-sheet {
+        animation: paper-fall 700ms cubic-bezier(.22, .75, .28, 1) both;
+      }
+
+      .paper-sheet h3 {
+        border-bottom: 2px solid var(--accent);
+        color: var(--text);
+        font-size: 16px;
+        margin: 0 0 18px;
+        padding-bottom: 8px;
+      }
+
+      .paper-sheet .paper-lines {
+        display: grid;
+        gap: 15px;
+      }
+
+      .paper-sheet .paper-lines span {
+        border-bottom: 1px solid var(--muted);
+        display: block;
+        height: 8px;
+      }
+
+      .paper-stack-copy {
+        max-width: 560px;
+      }
+
+      .js .paper-stack-copy {
+        animation: paper-copy-in 500ms 950ms ease both;
+      }
+
+      @keyframes paper-fall {
+        0% {
+          opacity: 0;
+          transform: translate(-50%, -270px) rotate(calc(var(--paper-rotation) * 2));
+        }
+        72% {
+          opacity: 1;
+          transform: translate(calc(-50% + var(--paper-x)), 8px) rotate(calc(var(--paper-rotation) * -0.35));
+        }
+        100% {
+          opacity: 1;
+          transform: translate(calc(-50% + var(--paper-x)), 0) rotate(var(--paper-rotation));
+        }
+      }
+
+      @keyframes paper-copy-in {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+
       @media (max-width: 700px) {
         .story-nav,
         .story-copy,
@@ -756,6 +905,52 @@
           font-size: 16px;
           padding: 16px;
         }
+
+        .paper-stack-intro {
+          gap: 18px;
+          grid-template-columns: 1fr;
+        }
+
+        .paper-stack {
+          height: 250px;
+          margin: 0 auto;
+          max-width: 300px;
+          width: 100%;
+        }
+
+        .paper-sheet {
+          height: 150px;
+          padding: 18px 16px;
+          width: 160px;
+        }
+
+        .paper-sheet h3 {
+          font-size: 13px;
+          margin-bottom: 12px;
+        }
+
+        .paper-sheet .paper-lines {
+          gap: 9px;
+        }
+
+        .paper-stack::after {
+          width: 190px;
+        }
+
+        .paper-stack-copy {
+          text-align: center;
+        }
+
+        .paper-stack-copy h1 {
+          font-size: clamp(34px, 12vw, 48px);
+          margin-left: auto;
+          margin-right: auto;
+        }
+
+        .paper-stack-copy .lead {
+          margin-left: auto;
+          margin-right: auto;
+        }
       }
 
       @media (prefers-color-scheme: dark) {
@@ -787,6 +982,18 @@
           transition: none;
         }
 
+        .js .paper-sheet {
+          animation: none;
+          opacity: 1;
+          transform: translate(calc(-50% + var(--paper-x)), 0) rotate(var(--paper-rotation));
+        }
+
+        .js .paper-stack-copy {
+          animation: none;
+          opacity: 1;
+          transform: none;
+        }
+
         .narrative-card:nth-child(n) {
           transition-delay: 0ms;
         }
@@ -809,9 +1016,40 @@
     <main>
       <section class="story-section scene is-visible" id="intro">
         <div class="story-copy">
-          <p class="eyebrow">An illustrative production-line story</p>
-          <h1>You're the new QMS Manager at an applesauce plant.</h1>
-          <p class="lead">Here's your production line.</p>
+          <div class="paper-stack-intro">
+            <div class="paper-stack" aria-label="Six paper checks from a production line">
+              <article class="paper-sheet" data-stage="Incoming" aria-hidden="true">
+                <h3>Incoming</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+              <article class="paper-sheet" data-stage="Fill" aria-hidden="true">
+                <h3>Fill</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+              <article class="paper-sheet" data-stage="Seal" aria-hidden="true">
+                <h3>Seal</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+              <article class="paper-sheet" data-stage="Best By" aria-hidden="true">
+                <h3>Best By</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+              <article class="paper-sheet" data-stage="Packaging" aria-hidden="true">
+                <h3>Packaging</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+              <article class="paper-sheet" data-stage="Finished Case" aria-hidden="true">
+                <h3>Finished Case</h3>
+                <div class="paper-lines"><span></span><span></span><span></span></div>
+              </article>
+            </div>
+            <div class="paper-stack-copy">
+              <p class="eyebrow">One line. Six places to check.</p>
+              <h1>Every check leaves a paper trail.</h1>
+              <p class="lead">Before these checks become digital, they fill clipboards across the whole production line.</p>
+              <a class="button" href="#the-line">Follow the line</a>
+            </div>
+          </div>
           <p class="caption">Illustrative story with made-up data.</p>
         </div>
       </section>
