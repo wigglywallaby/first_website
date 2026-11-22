@@ -249,6 +249,30 @@ class StoryIntroTest(unittest.TestCase):
         )
         self.assertIsNotNone(guard)
 
+        observer = re.search(
+            r"const\s+lineTransitionObserver\s*=\s*new\s+IntersectionObserver"
+            r"\s*\(\s*\(entries(?:,\s*observer)?\)\s*=>\s*\{"
+            r"(.*?)\n\s*\}\s*,\s*\{\s*threshold",
+            HTML,
+            re.DOTALL,
+        )
+        self.assertIsNotNone(observer)
+        exit_logic = re.search(
+            r"if\s*\(\s*!entry\.isIntersecting\s*\)\s*\{(.*?)\n\s*\}",
+            observer.group(1),
+            re.DOTALL,
+        )
+        self.assertIsNotNone(exit_logic)
+        self.assertRegex(
+            exit_logic.group(1),
+            r"if\s*\(\s*wasLineEntered\s*&&"
+            r"\s*entry\.boundingClientRect\.bottom\s*<=\s*0"
+            r"\s*&&\s*window\.scrollY\s*<\s*previousScrollY\s*\)\s*\{"
+            r"\s*if\s*\(\s*!reducedMotion\s*\)\s*\{"
+            r"\s*lineSection\.classList\.remove\(\"is-transitioned\"\);"
+            r"\s*runPaperReverseHandoff\(\);",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
