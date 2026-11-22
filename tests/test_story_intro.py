@@ -88,10 +88,16 @@ class StoryIntroTest(unittest.TestCase):
         self.assertIsNotNone(sheet_fallback)
         self.assertNotIn("transform: none", sheet_fallback.group(0))
 
-    def test_line_markers_keep_scroll_rhythm_and_articles_are_hidden(self):
+    def test_line_markers_are_compact_and_forms_start_at_top(self):
         marker = re.search(r"\.step-marker\s*\{([^}]*)\}", HTML, re.DOTALL)
         self.assertIsNotNone(marker)
-        self.assertIn("height: 58vh", marker.group(1))
+        self.assertIn("height: 1px", marker.group(1))
+
+        line_step = re.search(r"\.line-step\s*\{([^}]*)\}", HTML, re.DOTALL)
+        self.assertIsNotNone(line_step)
+        self.assertIn("align-items: start", line_step.group(1))
+        self.assertIn("min-height: 58vh", line_step.group(1))
+
         self.assertEqual(HTML.count('data-step-marker="incoming"'), 1)
         self.assertEqual(HTML.count('data-step-marker="fill"'), 1)
         self.assertEqual(HTML.count('data-step-marker="seal"'), 1)
