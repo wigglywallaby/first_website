@@ -312,22 +312,45 @@
       }
 
       .line-steps {
+        height: 348vh;
         margin: 0 auto;
         max-width: 900px;
         padding: 0 24px;
       }
 
       .step-marker {
-        height: 1px;
-        margin-top: -1px;
+        height: 58vh;
+        margin-top: 0;
       }
 
       .line-step {
-        align-items: center;
-        display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(140px, 220px);
-        gap: 32px;
-        min-height: 58vh;
+        display: none;
+      }
+
+      #the-line.is-transitioned .form-icon rect,
+      #the-line.is-transitioned .form-icon path {
+        stroke: var(--accent);
+      }
+
+      .paper-handoff-clone {
+        background:
+          repeating-linear-gradient(
+            to bottom,
+            transparent 0,
+            transparent 24px,
+            color-mix(in srgb, var(--line) 58%, transparent) 25px
+          ),
+          var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        box-shadow: 0 12px 22px rgb(32 37 33 / 10%);
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 700;
+        padding: 24px 22px;
+        pointer-events: none;
+        position: fixed;
+        z-index: 100;
         padding: 48px 0;
       }
 
@@ -616,6 +639,8 @@
         font-size: 18px;
         font-weight: 650;
         padding: 20px;
+        text-align: left;
+        white-space: normal;
       }
 
       .button {
@@ -830,10 +855,7 @@
         }
 
         .line-step {
-          grid-template-columns: minmax(0, 1fr) minmax(86px, 112px);
-          gap: 14px;
-          min-height: 55vh;
-          padding: 32px 0;
+          display: none;
         }
 
         .step-copy {
@@ -1050,7 +1072,6 @@
               <a class="button" href="#the-line">Follow the line</a>
             </div>
           </div>
-          <p class="caption">Illustrative story with made-up data.</p>
         </div>
       </section>
 
@@ -1427,13 +1448,11 @@
               <li>A check that takes longer to write down than to do</li>
               <li>A radio call that gets garbled</li>
             </ul>
-            <p class="caption">Illustrative story with made-up data.</p>
           </article>
 
           <article class="narrative-card scene" id="your-move" data-narrative="move">
             <p class="eyebrow">Your move</p>
             <h2>You walk the floor and ask the operators what they actually need.</h2>
-            <p class="caption">Illustrative story with made-up data.</p>
           </article>
 
           <article class="narrative-card scene" id="ending" data-narrative="ending">
@@ -1443,7 +1462,6 @@
               Now you need to turn these forms into a system your operators will actually use.
             </p>
             <a class="button" href="./simulator.html">Open the simulator</a>
-            <p class="caption">Illustrative story with made-up data.</p>
           </article>
         </div>
       </section>
@@ -1519,6 +1537,87 @@
       let cupAnimationFrame;
       let activeContentObserver;
       let activationLineY = 0;
+
+      function runPaperHandoff() {
+        if (reducedMotion) {
+          return;
+        }
+
+        const stageStations = [
+          ["Incoming", "incoming"],
+          ["Fill", "fill"],
+          ["Seal", "seal"],
+          ["Best By", "bestby"],
+          ["Packaging", "packaging"],
+          ["Finished Case", "finished"],
+        ];
+
+        stageStations.forEach(([stage, station], index) => {
+          const sheet = document.querySelector(`.paper-sheet[data-stage="${stage}"]`);
+          const icon = document.querySelector(`.station[data-station="${station}"] .form-icon`);
+          if (!sheet || !icon) {
+            return;
+          }
+
+          const source = sheet.getBoundingClientRect();
+          const destination = icon.getBoundingClientRect();
+          if (!source.width || !source.height || !destination.width || !destination.height) {
+            return;
+          }
+
+          const clone = document.createElement("div");
+          clone.className = "paper-handoff-clone";
+          clone.setAttribute("aria-hidden", "true");
+          clone.textContent = stage;
+          clone.style.left = `${source.left}px`;
+          clone.style.top = `${source.top}px`;
+          clone.style.width = `${source.width}px`;
+          clone.style.height = `${source.height}px`;
+          document.body.appendChild(clone);
+
+          const sourceCenterX = source.left + source.width / 2;
+          const sourceCenterY = source.top + source.height / 2;
+          const destinationCenterX = destination.left + destination.width / 2;
+          const destinationCenterY = destination.top + destination.height / 2;
+          const deltaX = destinationCenterX - sourceCenterX;
+          const deltaY = destinationCenterY - sourceCenterY;
+          const destinationScale = Math.min(
+            destination.width / source.width,
+            destination.height / source.height,
+          );
+
+          if (typeof clone.animate === "function") {
+            const animation = clone.animate(
+              [
+                {
+                  opacity: 1,
+                  transform: "translate(0, 0) rotate(0deg) scale(1)",
+                },
+                {
+                  opacity: 1,
+                  transform: `translate(${deltaX * 0.68}px, ${deltaY * 0.68}px) rotate(-2deg) scale(1)`,
+                  offset: 0.72,
+                },
+                {
+                  opacity: 0,
+                  transform: `translate(${deltaX}px, ${deltaY}px) rotate(0deg) scale(${destinationScale})`,
+                },
+              ],
+              {
+                delay: index * 110,
+                duration: 850,
+                easing: "cubic-bezier(.22,.75,.28,1)",
+                fill: "both",
+              },
+            );
+            animation.finished
+              .then(() => clone.remove())
+              .catch(() => clone.remove());
+          } else {
+            clone.remove();
+          }
+        });
+      }
 
       function revealAllSections() {
         revealSections.forEach((section) => section.classList.add("is-visible"));
@@ -1708,6 +1807,31 @@
       }
 
       observeActiveContent();
+
+      const lineSection = document.getElementById("the-line");
+      if (lineSection) {
+        lineSection.classList.remove("is-transitioned");
+        if ("IntersectionObserver" in window) {
+          let handoffStarted = false;
+          const lineTransitionObserver = new IntersectionObserver(
+            (entries, observer) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && !handoffStarted) {
+                  handoffStarted = true;
+                  lineSection.classList.add("is-transitioned");
+                  runPaperHandoff();
+                  observer.unobserve(lineSection);
+                }
+              });
+            },
+            { threshold: 0.12 },
+          );
+          lineTransitionObserver.observe(lineSection);
+        } else {
+          lineSection.classList.add("is-transitioned");
+          runPaperHandoff();
+        }
+      }
 
       window.addEventListener("resize", () => {
         observeActiveContent();
